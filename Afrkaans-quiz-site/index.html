@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grade 8 Afrikaans Quiz</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- PayFast Onsite Engine -->
+  <script src="https://www.payfast.co.za/onsite/engine.js"></script>
+  <!-- Apple Sign In -->
+  <script type="text/javascript"
+    src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --glass-surface: rgba(255, 255, 255, 0.7);
+      --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: fixed linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #1e293b;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated Background Shapes */
+    .blob {
+      position: fixed;
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.6;
+      animation: float 10s infinite ease-in-out alternate;
+    }
+
+    .blob-1 {
+      top: -10%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: #a78bfa;
+      animation-delay: 0s;
+    }
+
+    .blob-2 {
+      bottom: -10%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: #f472b6;
+      animation-delay: -5s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      100% {
+        transform: translate(50px, 50px) rotate(20deg);
+      }
+    }
+
+    /* Glassmorphism Utilities */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      border-radius: 24px;
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(203, 213, 225, 0.6);
+      backdrop-filter: blur(4px);
+      transition: all 0.3s ease;
+    }
+
+    .glass-input:focus {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: #6366f1;
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+      outline: none;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 4px;
+    }
+
+    /* Social Grid & Icons */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin: 2rem 0;
+    }
+
+    .social-card {
+      aspect-ratio: 1;
+      border-radius: 20px;
+      background: white;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-card:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .social-card img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      margin-bottom: 8px;
+    }
+
+    .social-card .label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .social-card.free-badge::after {
+      content: 'FREE';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #10b981;
+      color: white;
+      font-size: 0.6rem;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-bottom-left-radius: 12px;
+    }
+
+    /* Tabs */
+    .tab-pill {
+      border-radius: 99px;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tab-pill.active {
+      background: white;
+      color: #4f46e5;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-pill.inactive {
+      color: #64748b;
+      background: transparent;
+    }
+
+    .tab-pill:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+
+
+    /* Loader */
+    .loader {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #6366f1;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .social-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .social-card .label {
+        display: none;
+      }
+
+      .blob {
+        display: none;
+      }
+
+      /* Performance */
+    }
+  </style>
+</head>
+
+<body class="antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Animated Background Elements -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- Debug Fallback -->
+  <div id="fallback" class="hidden glass-panel fixed top-4 right-4 p-4 text-xs font-mono text-red-600 z-[10000]">
+    <strong>Config Required</strong><br>Check console/code.
+  </div>
+
+  <!-- SIGN-IN GATEWAY -->
+  <div id="signin-gate" class="fixed inset-0 z-50 overflow-y-auto">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
+
+    <div
+      class="glass-panel w-full h-full min-h-screen p-8 relative z-10 animate-fade-in-up max-w-none rounded-none border-x-0 border-y-0">
+      <!-- Header -->
+      <div class="text-center mb-10">
+        <h1
+          class="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-pink-600 tracking-tight mb-3">
+          Afrikaans Quiz
+        </h1>
+        <p class="text-lg text-slate-600 font-medium">Log in to track your Grade 8 progress.</p>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="bg-indigo-50/50 p-1.5 rounded-full flex gap-1 mb-8 max-w-sm mx-auto border border-white/50">
+        <button id="tab-social" class="tab-pill active flex-1 py-2.5 font-semibold text-sm"
+          onclick="switchTab('social')">
+          Social Login
+        </button>
+        <button id="tab-email" class="tab-pill inactive flex-1 py-2.5 font-semibold text-sm"
+          onclick="switchTab('email')">
+          Email
+        </button>
+      </div>
+
+      <!-- Social Login Tab (Default) -->
+      <div id="social-tab" class="space-y-6">
+        <!-- Input Group -->
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Your Name</label>
+            <input type="text" id="name-social" placeholder="e.g. John Doe"
+              class="glass-input w-full p-4 rounded-xl text-lg font-medium placeholder:text-slate-400" />
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Email <span
+                class="font-normal normal-case text-slate-400">(for receipt)</span></label>
+            <input type="email" id="email-social" placeholder="name@example.com"
+              class="glass-input w-full p-4 rounded-xl text-lg font-medium placeholder:text-slate-400" />
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 my-2">
+          <div class="h-px bg-slate-200 flex-1"></div>
+          <span class="text-sm font-semibold text-slate-400">CHOOSE YOUR LOGIN</span>
+          <div class="h-px bg-slate-200 flex-1"></div>
+        </div>
+
+        <!-- HERO GRID: Modern Media Apps -->
+        <div class="social-grid">
+          <!-- JS will populate `onclick` but we hardcode structure for style reference/initial load if needed, 
+               but script does it dynamically. We will keep script logic but update the container ID reference. 
+               The original script targets `app-list` inside `social-tab`? No, original had logic. 
+               We need to REPLICATE the icons here manually to match the new style OR update the JS renderer. 
+               OPTIMAL: Update the JS `renderAppList` function to render OUR new structure. 
+               For now, let's keep the existing `social-icons` container HTML but empty, loop will fill it.
+               WAIT: The Review Plan said "Social Grid... front and center".
+               I will add a specific container ID `modern-app-grid` and update JS to render there. -->
+          <!-- Actually, I can just pre-fill it here with the proper visual classes for the "Mock" look 
+                and let the JS CLICK handlers works. 
+                However, existing JS `renderAppList` clears `app-list` div. 
+                I will make `app-list` the grid container. -->
+        </div>
+        <div id="app-list" class="social-grid">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Status & PayFast Action Area -->
+        <div id="status-area" class="min-h-[80px] flex flex-col items-center justify-center gap-3">
+          <div id="status" class="text-center font-medium text-slate-600"></div>
+          <div id="payfast-container" class="w-full max-w-sm"></div>
+          <button id="login-btn" onclick="startLogin()" disabled
+            class="w-full max-w-sm bg-slate-200 text-slate-400 font-bold py-4 rounded-xl transition-all cursor-not-allowed hidden">
+            Select an App above
+          </button>
+        </div>
+
+        <div class="text-center">
+          <p class="text-xs text-slate-400">
+            Secure payments via PayFast. Supported: Cards, SnapScan, Zapper.
+          </p>
+        </div>
+      </div>
+
+      <!-- Email Login Tab -->
+      <div id="email-tab" class="hidden space-y-6 max-w-md mx-auto">
+        <div class="space-y-4">
+          <input type="text" id="name" placeholder="Full Name" class="glass-input w-full p-4 rounded-xl" />
+          <input type="email" id="email-input" placeholder="Email Address" class="glass-input w-full p-4 rounded-xl" />
+          <input type="password" id="password" placeholder="Password" class="glass-input w-full p-4 rounded-xl" />
+        </div>
+
+        <button onclick="emailLogin()"
+          class="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-500/30 transform hover:-translate-y-0.5 transition-all">
+          Sign In
+        </button>
+        <div class="text-center p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+          <p class="text-sm text-indigo-800"><strong>Demo Access:</strong></p>
+          <p class="text-xs text-indigo-600 mt-1">Use any email + password: "demo"</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MAIN APP (QUIZ) -->
+  <div id="quiz-main" class="container mx-auto px-4 py-8 min-h-screen hidden grid-cols-1 lg:grid-cols-12 gap-8">
+
+    <!-- Sidebar / Stats -->
+    <aside class="lg:col-span-3 space-y-6">
+      <div class="glass-panel p-6 text-center">
+        <div class="w-20 h-20 bg-indigo-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">
+          🎓
+        </div>
+        <h2 id="user-name-display" class="font-bold text-xl text-slate-800">Student</h2>
+        <p id="user-app-display" class="text-xs font-semibold uppercase tracking-wider text-indigo-500 mb-4">Guest</p>
+        <button onclick="location.reload()"
+          class="text-sm text-slate-500 hover:text-slate-800 underline decoration-slate-300">Log Out</button>
+      </div>
+
+      <div class="glass-panel p-6 hidden" id="teacher">
+        <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 bg-emerald-500 rounded-full"></span> Teacher Mode
+        </h3>
+        <button onclick="downloadCSV()"
+          class="w-full py-2.5 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-700 transition">
+          Download CSV Results
+        </button>
+        <div id="results" class="mt-4 text-xs text-slate-500 overflow-y-auto max-h-60"></div>
+      </div>
+    </aside>
+
+    <!-- Quiz Content -->
+    <section class="lg:col-span-9 space-y-6">
+      <header
+        class="glass-panel p-6 flex justify-between items-center bg-gradient-to-r from-indigo-600 to-purple-600 border-none text-white">
+        <div>
+          <h1 class="text-2xl font-bold">Grade 8 Afrikaans</h1>
+          <p class="text-indigo-100 text-sm opacity-90">Woordeskat & Grammatika</p>
+        </div>
+        <div class="bg-white/20 px-4 py-2 rounded-lg backdrop-blur-md">
+          <span class="font-mono font-bold">15 Qs</span>
+        </div>
+      </header>
+
+      <div class="glass-panel p-8">
+        <ol id="questions" class="space-y-8 divide-y divide-slate-100"></ol> <!-- Rendered by JS -->
+
+        <div class="mt-12 flex gap-4 border-t pt-8">
+          <button onclick="submitQuiz()"
+            class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/20 transition-all transform hover:-translate-y-1">
+            Submit & Grade
+          </button>
+          <button onclick="resetQuiz()"
+            class="px-8 py-4 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all">
+            Reset
+          </button>
+        </div>
+
+        <div id="score"
+          class="mt-8 p-6 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-800 text-center font-bold text-xl hidden animate-pulse">
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <script>
+    // === CONFIGURATION START ===
+    // 1. GOOGLE LOGIN
+    // Go to https://console.cloud.google.com/apis/credentials to get your Client ID.
+    const GOOGLE_CLIENT_ID = '36499616374-ck0vq5h0mbghba6on418jrdlmiulmjkt.apps.googleusercontent.com';
+
+    // 2. PAYFAST PAYMENT
+    // Go to https://www.payfast.co.za/ to get your Merchant ID and Key.
+    // Sandbox (Testing) Details provided by default for testing.
+    const PAYFAST_MERCHANT_ID = '10000100'; // PayFast Sandbox ID
+    const PAYFAST_MERCHANT_KEY = '46f0cd694581a'; // PayFast Sandbox Key
+    const PAYFAST_PASSPHRASE = 'payfast'; // PayFast Sandbox Passphrase
+    const PAYFAST_SANDBOX = true; // Set to false when you are ready to go live!
+
+    // URLs
+    const RETURN_URL = window.location.href; // Where to go after payment (Current page)
+
+    // === CONFIGURATION END ===
+
+
+    // === 10 MOST USED MEDIA APPS (2025) ===
+    const MEDIA_APPS = [
+      { name: 'Google', type: 'google', icon: 'https://www.google.com/favicon.ico' },
+      { name: 'Kahoot (Free)', type: 'kahoot', icon: 'https://kahoot.com/favicon.ico', free: true }
+    ];
+
+    let answers = {}, user = null, selectedApp = null;
+
+    // === HELPER: Click icon → select app + start login ===
+    function selectAppAndStart(app) {
+      selectedApp = app;
+      document.getElementById('name-social').value = document.getElementById('name').value.trim();
+      document.getElementById('email-social').value = document.getElementById('email-input').value.trim();
+      switchTab('social');
+      setTimeout(() => selectApp(app), 50);
+    }
+
+    // === TAB SWITCHING ===
+    function switchTab(tab) {
+      const emailTab = document.getElementById('email-tab');
+      const socialTab = document.getElementById('social-tab');
+      const emailBtn = document.getElementById('tab-email');
+      const socialBtn = document.getElementById('tab-social');
+      if (tab === 'email') {
+        emailTab.classList.remove('hidden');
+        socialTab.classList.add('hidden');
+        emailBtn.classList.add('active'); emailBtn.classList.remove('inactive');
+        socialBtn.classList.add('inactive'); socialBtn.classList.remove('active');
+      } else {
+        emailTab.classList.add('hidden');
+        socialTab.classList.remove('hidden');
+        emailBtn.classList.add('inactive'); emailBtn.classList.remove('active');
+        socialBtn.classList.add('active'); socialBtn.classList.remove('inactive');
+      }
+    }
+
+    // === EMAIL LOGIN (DEMO) ===
+    function emailLogin() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email-input').value.trim();
+      const password = document.getElementById('password').value;
+      if (!name || !email || !password) return alert('All fields required');
+      if (password !== 'demo') return alert('Password: "demo" (for testing)');
+      user = { name, email, app: 'Email' };
+      enterQuiz();
+    }
+
+    // === RENDER SOCIAL APPS (GRID) ===
+    function renderAppList() {
+      const list = document.getElementById('app-list');
+      list.innerHTML = '';
+      list.className = 'grid grid-cols-2 gap-4'; // Adjusted for fewer items
+      MEDIA_APPS.forEach(app => {
+        const div = document.createElement('div');
+        div.className = `social-card ${app.free ? 'free-badge' : ''}`;
+        div.onclick = () => selectApp(app, div);
+        div.innerHTML = `
+          <img src="${app.icon}" alt="${app.name} icon" loading="lazy">
+          <span class="label">${app.name}</span>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function selectApp(app, element) {
+      document.querySelectorAll('.social-card').forEach(el => {
+        el.classList.remove('ring-4', 'ring-indigo-400');
+        el.style.transform = 'none';
+      });
+      element.classList.add('ring-4', 'ring-indigo-400');
+      element.style.transform = 'scale(0.95)';
+
+      selectedApp = app;
+
+      // Update UI Status Phase
+      const statusArea = document.getElementById('status-area');
+      const loginBtn = document.getElementById('login-btn');
+      const payfast = document.getElementById('payfast-container');
+      const status = document.getElementById('status');
+
+      loginBtn.classList.remove('hidden');
+      loginBtn.disabled = false;
+
+      // Clear previous states
+      payfast.innerHTML = '';
+
+      if (app.free) {
+        status.innerHTML = `<span class="text-emerald-600 font-bold text-lg">Free Educational Access</span>`;
+        loginBtn.innerHTML = 'Sign In to ' + app.name;
+        loginBtn.className = "w-full max-w-sm bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg transition-all";
+        loginBtn.onclick = startLogin;
+      } else {
+        status.innerHTML = `<span class="text-slate-600">Selected: <strong>${app.name}</strong></span>`;
+
+        // Show PayFast Button
+        payfast.innerHTML = `
+          <div onclick="startPayFast()" class="cursor-pointer w-full bg-[#ff4605] hover:bg-[#d93a00] text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-3 transition-transform transform hover:-translate-y-0.5">
+            <span>Pay R50 with PayFast</span>
+             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          </div>
+        `;
+        // Hide default continue button when PayFast is active to avoid confusion (or keep it as alternative if logic permits, but PayFast is the action)
+        loginBtn.classList.add('hidden');
+      }
+    }
+
+    // === PAYFAST ===
+    function startPayFast() {
+      const name = document.getElementById('name-social').value.trim();
+      const email = document.getElementById('email-social').value.trim();
+      if (!name || !email) return alert('Name & Email required');
+      const data = {
+        merchant_id: PAYFAST_MERCHANT_ID,
+        merchant_key: PAYFAST_MERCHANT_KEY,
+        return_url: RETURN_URL,
+        cancel_url: RETURN_URL,
+        name_first: name.split(' ')[0],
+        name_last: name.split(' ').slice(1).join(' ') || 'User',
+        email_address: email,
+        m_payment_id: 'quiz_' + Date.now(),
+        amount: '50.00',
+        item_name: 'Grade 8 Afrikaans Quiz',
+        custom_str1: selectedApp.type,
+        custom_str2: btoa(email),
+        passphrase: PAYFAST_PASSPHRASE
+      };
+      let pfParamString = '';
+      for (let key in data) {
+        if (data[key] && key !== 'signature') {
+          pfParamString += `${key}=${encodeURIComponent(data[key]).replace(/%20/g, '+')}&`;
+        }
+      }
+      pfParamString = pfParamString.slice(0, -1);
+      data.signature = CryptoJS.MD5(pfParamString).toString();
+      const pf = new PayFast.Onsite(data);
+      pf.open(PAYFAST_SANDBOX);
+    }
+
+    function handlePayFastReturn() {
+      const params = new URLSearchParams(window.location.search);
+      const paymentStatus = params.get('payment_status');
+      const pfPaymentId = params.get('pf_payment_id');
+      if (pfPaymentId && paymentStatus === 'COMPLETE') {
+        const name = document.getElementById('name-social').value.trim() || 'Paid User';
+        const email = atob(params.get('custom_str2') || '');
+        user = { name, email, app: params.get('custom_str1') || 'PayFast' };
+        enterQuiz();
+      }
+    }
+
+    // === OAUTH HANDLERS ===
+    function googleSignIn() {
+      if (GOOGLE_CLIENT_ID.includes('YOUR_')) return simulateAuthSuccess();
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: r => {
+          fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${r.credential}`)
+            .then(x => x.json())
+            .then(d => { user = { name: d.name, email: d.email, app: 'Google' }; enterQuiz(); })
+            .catch(simulateAuthSuccess);
+        }
+      });
+      google.accounts.id.prompt();
+    }
+
+    function simulateAuthSuccess() {
+      user = { name: document.getElementById('name-social').value.trim() || 'Guest', app: selectedApp.name };
+      enterQuiz();
+    }
+
+    function startLogin() {
+      const name = document.getElementById('name-social').value.trim();
+      if (!name) return alert('Please enter your name');
+      if (selectedApp.free) { simulateAuthSuccess(); return; }
+
+      if (selectedApp.type === 'google') googleSignIn();
+      else simulateAuthSuccess();
+    }
+
+
+    function renderQuiz() {
+      const ol = document.getElementById('questions');
+      ol.innerHTML = '';
+      MOCK_QUESTIONS.forEach(q => {
+        const li = document.createElement('li');
+        li.className = 'pt-4';
+
+        let inputHTML = '';
+        if (q.type === 'short') {
+          inputHTML = `<input type="text" placeholder="Tik jou antwoord..." 
+                class="glass-input w-full p-4 mt-3 rounded-xl focus:ring-2 focus:ring-indigo-500"
+                oninput="answers['${q.id}'] = this.value">`;
+        } else {
+          let options = `<option value="">-- Kies --</option>`;
+          q.options.forEach(o => options += `<option value="${o}">${o}</option>`);
+          inputHTML = `<select class="glass-input w-full p-4 mt-3 rounded-xl focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                onchange="answers['${q.id}'] = this.value">${options}</select>`;
+        }
+
+        li.innerHTML = `
+            <div class="font-medium text-lg text-slate-700 leading-relaxed">${q.prompt}</div>
+            ${inputHTML}
+        `;
+        ol.appendChild(li);
+      });
+      // Update User Info in Sidebar
+      if (user) {
+        document.getElementById('user-name-display').textContent = user.name || 'Student';
+        document.getElementById('user-app-display').textContent = user.app || 'Guest';
+      }
+    }
+
+    function submitQuiz() {
+      let correct = 0;
+      MOCK_QUESTIONS.forEach(q => {
+        const expected = (q.answer || '').trim().toLowerCase();
+        const got = (answers[q.id] || '').trim().toLowerCase();
+        if (got && (got === expected || expected.includes(got))) correct++;
+      });
+      const scoreEl = document.getElementById('score');
+      scoreEl.innerHTML = `<strong>Score:</strong> ${correct} / ${MOCK_QUESTIONS.length}`;
+      scoreEl.style.display = 'block';
+      addMockResult(correct);
+    }
+
+    function resetQuiz() {
+      answers = {};
+      document.getElementById('score').style.display = 'none';
+      renderQuiz();
+    }
+
+    let mockResults = JSON.parse(localStorage.getItem('mock_results') || '[]');
+    function addMockResult(score) {
+      const r = { name: user.name, app: user.app, correct: score, total: MOCK_QUESTIONS.length, time: new Date().toISOString() };
+      mockResults.push(r);
+      localStorage.setItem('mock_results', JSON.stringify(mockResults));
+      loadMockResults();
+    }
+
+    function loadMockResults() {
+      const div = document.getElementById('results');
+      if (!mockResults.length) { div.innerHTML = '<p class="text-gray-500">No results yet.</p>'; return; }
+      let table = `<table class="w-full text-left text-sm"><thead><tr class="border-b"><th>Name</th><th>App</th><th>Score</th><th>Time</th></tr></thead><tbody>`;
+      mockResults.forEach(r => table += `<tr class="border-b"><td>${r.name}</td><td>${r.app}</td><td>${r.correct}/${r.total}</td><td class="text-xs">${new Date(r.time).toLocaleString()}</td></tr>`);
+      table += `</tbody></table>`;
+      div.innerHTML = table;
+      document.getElementById('teacher').style.display = 'block';
+    }
+
+    function downloadCSV() {
+      if (!mockResults.length) return alert('No data');
+      let csv = 'Name,App,Correct,Total,Time\n';
+      mockResults.forEach(r => csv += `"${r.name}","${r.app}",${r.correct},${r.total},"${r.time}"\n`);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+      a.download = 'afrikaans_results.csv'; a.click();
+    }
+
+    // === INIT ===
+    window.addEventListener('load', () => {
+      // handleCallback(); // Removed unused callback handler
+      handlePayFastReturn();
+      renderAppList();
+      document.getElementById('fallback').classList.add('hidden');
+    });
+  </script>
+  <!-- CryptoJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <!-- Facebook SDK Root -->
+  <div id="fb-root"></div>
+</body>
+
+</html>

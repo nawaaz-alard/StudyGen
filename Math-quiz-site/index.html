@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Grade 8 Mathematics — Vibrant Study Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;700;800&family=Patrick+Hand&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="src/styles/main.css?v=10">
+
+    <!-- Meta Tags & SEO -->
+    <meta name="description"
+        content="A gamified Grade 8 Math Study Hub with interactive quizzes, focus timer, and progress tracking.">
+    <meta property="og:title" content="Math Explorer - Grade 8 Hub">
+    <meta property="og:description"
+        content="Master Algebra and Geometry with our vibrant, gamified study app. Features offline mode and XP tracking.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://math-explorer-hub.web.app">
+    <meta property="og:image" content="src/assets/icon-512.png">
+    <link rel="stylesheet" href="src/styles/dragdrop.css">
+    <link rel="stylesheet" href="src/styles/animations.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+
+    <!-- PWA Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW registration failed: ', err));
+            });
+        }
+    </script>
+
+    <!-- Scripts -->
+    <script src="src/scripts/data.js" defer></script>
+    <script src="src/scripts/gamification.js" defer></script>
+    <script src="src/scripts/widgets.js" defer></script>
+    <script src="src/scripts/canvas.js" defer></script>
+    <script src="src/scripts/app.js" defer></script>
+</head>
+
+<body>
+    <div id="mouse-glow" style="--mx: 0px; --my: 0px;"></div>
+
+    <header>
+        <div class="brand">
+            <div class="logo">G8</div>
+            <div class="brand-text">
+                <h1 class="gradient-text">Mathematics</h1>
+                <div class="sub">Vibrant Interactive Hub</div>
+            </div>
+        </div>
+
+        <div class="user-profile" onclick="openDashboard()" title="Click to open Student Dashboard">
+            <div id="user-level" class="level-badge">Lvl 1</div>
+            <div class="xp-container">
+                <div class="xp-bar">
+                    <div id="xp-bar-fill" style="width: 0%"></div>
+                </div>
+                <div id="user-xp" class="xp-text math-font">0 / 100 XP</div>
+            </div>
+        </div>
+
+        <nav id="paper-nav">
+            <button class="tab-btn active" data-paper="paper1">Paper 1</button>
+            <button class="tab-btn" data-paper="paper2">Paper 2</button>
+        </nav>
+
+        <div class="controls">
+            <button class="btn ghost" onclick="document.getElementById('tools-modal').classList.add('active')">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                    </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span>Tools</span>
+            </button>
+            <button id="btn-focus" class="btn ghost" aria-label="Toggle Focus Mode" onclick="GAMIFICATION.toggleFocus()"
+                title="Toggle Focus Mode">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+            </button>
+
+            <button class="btn ghost" aria-label="Shop"
+                onclick="document.getElementById('shop-modal').classList.add('active'); GAMIFICATION.updateShopUI();">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+            </button>
+            <button id="btn-quiz" class="btn primary" aria-label="Start Quiz">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Launch Quiz</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-layout">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2>Welcome, Mathematician!</h2>
+                <p>Ready to master algebra, geometry, and number systems?</p>
+                <button id="btn-hero-quiz" class="btn primary" style="background: #fff; color: var(--paper1);"
+                    onclick="document.getElementById('btn-quiz').click()">
+                    <span>Start Practice Session</span>
+                </button>
+                <button class="btn ghost" onclick="launchBlitzSetup()"
+                    style="margin-left:1rem; border-color:rgba(255,255,255,0.3); color:#fff;">
+                    ⚡ Speed Blitz
+                </button>
+            </div>
+            <div class="floating-particles" id="particles">
+                <div class="particle p1"></div>
+                <div class="particle p2"></div>
+                <div class="particle p3"></div>
+                <div class="particle p4"></div>
+                <div class="particle p5"></div>
+            </div>
+        </section>
+
+        <div class="search-area">
+            <div class="search-box">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" id="search-input" placeholder="Search for prime factors, angles, equations..."
+                    aria-label="Search content">
+            </div>
+        </div>
+
+        <div id="paper1-grid" class="grid section-view"></div>
+        <div id="paper2-grid" class="grid section-view" style="display: none;"></div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-copy">&copy; 2026 Math Explorer. Aligned to Grade 8 CAPS. <span class="reset-link"
+                style="cursor:pointer; text-decoration:underline; margin-left:1rem;"
+                onclick="GAMIFICATION.resetProgress()">Reset Progress</span></div>
+        <div class="footer-links">
+            <button class="footer-link"
+                style="background:none; border:none; padding:0; font:inherit; cursor:pointer; color:inherit;"
+                onclick="document.getElementById('about-modal').classList.add('active')">About</button>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="quiz-config-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="margin:0">Quiz Setup</h2>
+                <button class="btn ghost close-modal" style="padding:0.5rem;">✕</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 2rem;">
+                    <label style="display:block; margin-bottom:1rem; font-weight:700; color:var(--muted);">Topic
+                        Selection</label>
+                    <div class="options-group" id="paper-select" style="display:flex; gap:1rem;">
+                        <button class="tab-btn active option-btn"
+                            style="flex:1; border:1px solid var(--panel-border); border-radius:12px;"
+                            data-val="paper1">Paper 1</button>
+                        <button class="tab-btn option-btn"
+                            style="flex:1; border:1px solid var(--panel-border); border-radius:12px;"
+                            data-val="paper2">Paper 2</button>
+                        <button class="tab-btn option-btn"
+                            style="flex:1; border:1px solid var(--panel-border); border-radius:12px;"
+                            data-val="both">Mixed</button>
+                    </div>
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:1rem; font-weight:700; color:var(--muted);">Question
+                        Density</label>
+                    <select id="config-count" aria-label="Question Density"
+                        style="width:100%; padding:1rem; border-radius:12px; border:1px solid var(--panel-border); font-size:1rem;">
+                        <option value="5">Rapid Check (5)</option>
+                        <option value="10">Deep Dive (10)</option>
+                        <option value="15" selected>Standard (15)</option>
+                        <option value="20">Exam Prep (20)</option>
+                    </select>
+                </div>
+                <div style="margin-top:1.5rem; display:flex; align-items:center; gap:0.5rem;">
+                    <input type="checkbox" id="config-instant" style="width:20px; height:20px;">
+                    <label for="config-instant">Enable Instant Feedback</label>
+                </div>
+                <!-- Mistakes Mode Option -->
+                <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid var(--glass-border);">
+                    <button id="btn-mistakes-mode" class="btn ghost"
+                        style="width:100%; justify-content:center; color:var(--error) !important;"
+                        onclick="launchMistakesQuiz()">
+                        Review My Mistakes (<span id="mistakes-count">0</span>)
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="start-now" class="btn primary" style="width: 100%; justify-content: center;">Start
+                    Assessment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Modal -->
+    <div id="shop-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Math-Shop</h3>
+                <div class="badge" style="margin:0; background:rgba(219, 39, 119, 0.1); color:var(--accent);">
+                    <span id="shop-balance">0</span> XP
+                </div>
+                <button class="btn ghost close-modal">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="sub" style="margin-bottom:1.5rem;">Spend your hard-earned XP on upgrades!</p>
+
+                <h4 style="margin-bottom:1rem;">Themes</h4>
+                <div class="shop-grid">
+                    <!-- Neon Theme -->
+                    <div class="shop-item" id="item-theme-neon">
+                        <div class="item-icon">⚡</div>
+                        <div class="item-details" style="flex:1">
+                            <strong>Neon Mode</strong>
+                            <div style="font-size:0.8rem; color:var(--muted)">100 XP</div>
+                        </div>
+                        <button class="btn-small" style="background:var(--paper1); color:#fff;"
+                            onclick="GAMIFICATION.buyItem('theme-neon', 100, 'theme')">Buy</button>
+                    </div>
+
+                    <!-- Vintage Theme -->
+                    <div class="shop-item" id="item-theme-vintage">
+                        <div class="item-icon">📜</div>
+                        <div class="item-details" style="flex:1">
+                            <strong>Vintage</strong>
+                            <div style="font-size:0.8rem; color:var(--muted)">200 XP</div>
+                        </div>
+                        <button class="btn-small" style="background:var(--paper1); color:#fff;"
+                            onclick="GAMIFICATION.buyItem('theme-vintage', 200, 'theme')">Buy</button>
+                    </div>
+                </div>
+
+                <h4 style="margin-bottom:1rem;">Badges</h4>
+                <div class="shop-grid">
+                    <div class="shop-item" id="item-badge-math">
+                        <div class="item-icon">📐</div>
+                        <div class="item-details" style="flex:1">
+                            <strong>Geometry Master</strong>
+                            <div style="font-size:0.8rem; color:var(--muted)">50 XP</div>
+                        </div>
+                        <button class="btn-small" style="background:var(--paper1); color:#fff;"
+                            onclick="GAMIFICATION.buyItem('badge-math', 50, 'badge')">Buy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-session-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>Assessment</h3>
+                <span id="quiz-progress" class="badge">Q1 / 15</span>
+            </div>
+            <div class="modal-body" id="quiz-content"></div>
+            <div class="modal-footer" id="quiz-footer">
+                <button id="q-prev" class="btn ghost">Back</button>
+                <div style="flex:1"></div>
+                <button id="q-next" class="btn primary">Next</button>
+                <button id="q-submit" class="btn primary" style="display: none;">Finish & Grade</button>
+                <button id="q-done" class="btn primary" style="display: none;">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>About Math Explorer</h3>
+                <button class="btn ghost close-modal">✕</button>
+            </div>
+            <div class="modal-body">
+                <p>This study aid is designed for <strong>Grade 8 Mathematics</strong> students.</p>
+                <div style="margin: 1rem 0; padding: 1rem; background: rgba(0,0,0,0.05); border-radius: 8px;">
+                    <strong>Topics Covered:</strong>
+                    <ul style="margin-top:0.5rem; padding-left:1.2rem; color:var(--text-dim)">
+                        <li>Whole Numbers, Integers, Exponents</li>
+                        <li>Algebraic Expressions & Equations</li>
+                        <li>Geometry (Lines, 2D Shapes, Pythagoras)</li>
+                        <li>Measurement (Area, Perimeter, Volume)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STUDENT DASHBOARD MODAL (Replaces XP Guide) -->
+    <div id="dashboard-modal" class="modal-overlay">
+        <div class="modal-content modal-wide">
+            <div class="modal-header">
+                <h3>Student Dashboard</h3>
+                <button class="btn ghost close-modal">✕</button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Profile Header -->
+                <div
+                    style="background:linear-gradient(135deg, var(--paper1), var(--accent)); padding:1.5rem; border-radius:16px; color:#fff; display:flex; align-items:center; gap:1.5rem; margin-bottom:2rem; box-shadow:0 10px 30px -5px var(--paper1-glow);">
+                    <div style="font-size:3.5rem; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));">🎓</div>
+                    <div style="flex:1;">
+                        <div id="dash-level"
+                            style="font-size:0.9rem; text-transform:uppercase; font-weight:800; opacity:0.8;">Level 1
+                            Scholar</div>
+                        <h2 style="margin:0; font-size:2rem;">Welcome Back!</h2>
+                        <div style="margin-top:0.5rem; font-size:0.95rem; opacity:0.9;">Current XP: <span id="dash-xp"
+                                style="font-weight:700;">0</span></div>
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:2rem;">
+                    <!-- Left Col: Stats -->
+                    <div>
+                        <h4 style="margin-bottom:1rem; color:var(--text-main)">Mastery Levels</h4>
+                        <div id="stats-container">
+                            <!-- Bars injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Right Col: Daily Quests -->
+                    <div style="background: rgba(0,0,0,0.03); padding:1.5rem; border-radius:16px;">
+                        <h4 style="margin-bottom:1rem; color:var(--text-main)">Daily Quests 📅</h4>
+                        <ul id="quest-list" style="list-style:none; padding:0; margin:0;">
+                            <!-- Quests injected by JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn ghost" onclick="GAMIFICATION.resetProgress()">⚠ Reset Data</button>
+                <button class="btn primary close-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- XP Guide Modal (Legacy/Simple view still accessible if needed, but Dashboard is primary) -->
+    <div id="xp-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Level Progress</h3>
+                <button class="btn ghost close-modal">✕</button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align:center; padding:2rem 0;">
+                    <div style="font-size:3rem; margin-bottom:0.5rem">⭐</div>
+                    <h3>Level <span id="lvl-display-lg">1</span></h3>
+                    <p style="color:var(--muted)">Keep earning XP to unlock themes!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tools Modal -->
+    <div id="tools-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Study Tools</h3>
+                <button class="btn ghost close-modal">✕</button>
+            </div>
+            <div class="modal-body" style="display:grid; grid-template-columns: 1fr; gap:2rem;">
+
+                <!-- Timer Widget (Recreated from Math logic but inside modal) -->
+                <section class="widget" style="margin:0; box-shadow:none; border:none; background:transparent;">
+                    <div class="widget-title" style="color:var(--text-main);">
+                        <svg class="text-timer-color" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Focus Timer
+                    </div>
+                    <div class="timer-container" style="transform: scale(0.9);">
+                        <!-- Timer SVG -->
+                        <svg class="timer-svg" width="180" height="180">
+                            <circle class="timer-bg" cx="90" cy="90" r="80" style="stroke:rgba(0,0,0,0.1)"></circle>
+                            <circle id="timer-progress" class="timer-progress" cx="90" cy="90" r="80"
+                                stroke-dasharray="502.6" stroke-dashoffset="0"></circle>
+                        </svg>
+                        <div id="timer-display" class="timer-text" style="color:var(--text-main)">25:00</div>
+                    </div>
+                    <div class="timer-controls">
+                        <button id="timer-start" class="btn-small active">Start</button>
+                        <button id="timer-reset" class="btn-small"
+                            style="background:rgba(0,0,0,0.05); color:var(--text-main)">Reset</button>
+                    </div>
+                </section>
+
+                <hr style="border:0; border-top:1px solid var(--panel-border); width:100%;">
+
+                <!-- Report Generator -->
+                <section class="widget" style="margin:0; box-shadow:none; border:none; background:transparent;">
+                    <div class="widget-title" style="color:var(--text-main);">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                        Report Card
+                    </div>
+                    <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1rem;">Generate a summary of activity
+                        for parents or teachers.</p>
+                    <button class="btn-small active" style="width:100%; text-align:center;" onclick="generateReport()">
+                        Download Progress Report
+                    </button>
+                    <div id="report-output"
+                        style="display:none; margin-top:1rem; background:rgba(255,255,255,0.5); padding:1rem; border-radius:8px; font-family:monospace; font-size:0.8rem; color:var(--text-main); white-space:pre-wrap;">
+                    </div>
+                </section>
+
+                <!-- Todo Widget -->
+                <section class="widget" style="margin:0; box-shadow:none; border:none; background:transparent;">
+                    <div class="widget-title" style="color:var(--text-main);">
+                        <svg class="text-success" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Study Goals
+                    </div>
+                    <div class="todo-input-wrap">
+                        <input type="text" id="todo-input" class="todo-input" placeholder="Add goal..."
+                            style="background:#fff; color:var(--text-main); border:1px solid var(--panel-border);">
+                        <button id="todo-add" class="btn-small active">+</button>
+                    </div>
+                    <ul id="todo-list" class="todo-list" style="max-height: 200px; overflow-y: auto;"></ul>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Blitz Modal -->
+    <div id="blitz-modal" class="modal-overlay">
+        <div class="modal-content modal-wide blitz-content">
+            <div class="modal-header" style="background:transparent; border-color:rgba(255,255,255,0.1);">
+                <h3 style="color:#fff">Math Blitz</h3>
+                <div class="badge" style="background:var(--accent); color:#fff; border:none;">Score: <span
+                        id="blitz-score">0</span>
+                </div>
+                <button class="btn ghost close-modal" onclick="stopBlitz()" style="color:#fff">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="blitz-game-area" class="blitz-area"></div>
+                <div id="blitz-start-overlay" class="blitz-start-overlay">
+                    <h2 style="font-size:3rem; margin-bottom:1rem; color:#fff">Ready?</h2>
+                    <button class="btn primary" onclick="startBlitzGame()">Start Game</button>
+                </div>
+            </div>
+            <div class="modal-footer blitz-controls-grid" id="blitz-controls"
+                style="background:transparent; border:none; padding-top:0;"></div>
+        </div>
+    </div>
+
+</body>
+
+</html>

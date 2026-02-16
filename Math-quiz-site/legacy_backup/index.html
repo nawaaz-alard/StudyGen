@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Grade 8 Mathematics — Vibrant Study Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #020617;
+            --panel: rgba(15, 23, 42, 0.7);
+            --panel-border: rgba(255, 255, 255, 0.12);
+            --muted: #94a3b8;
+            --paper1: #3b82f6;
+            --paper1-glow: rgba(59, 130, 246, 0.5);
+            --paper2: #10b981;
+            --paper2-glow: rgba(16, 185, 129, 0.5);
+            --accent: #d946ef;
+            --accent-glow: rgba(217, 70, 239, 0.5);
+            --card-bg: rgba(30, 41, 59, 0.5);
+            --text-main: #f8fafc;
+            --text-dim: #cbd5e1;
+            --glass-white: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --success: #22c55e;
+            --error: #ef4444;
+            --timer-color: #f59e0b;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.4) 0, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(217, 70, 239, 0.4) 0, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.3) 0, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            overflow-x: hidden;
+            animation: bg-shift 20s infinite alternate linear;
+        }
+
+        @keyframes bg-shift {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        /* Mouse Glow Layer */
+        #mouse-glow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background: radial-gradient(circle 300px at var(--mx) var(--my), rgba(59, 130, 246, 0.15), transparent 80%);
+            mix-blend-mode: soft-light;
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Header / Nav */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 2.5rem;
+            background: rgba(2, 6, 23, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        .brand {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+        }
+
+        .logo {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--paper1), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1.4rem;
+            box-shadow: 0 0 20px var(--paper1-glow);
+            animation: logo-glow 3s infinite alternate;
+        }
+
+        @keyframes logo-glow {
+            from {
+                box-shadow: 0 0 10px var(--paper1-glow);
+            }
+
+            to {
+                box-shadow: 0 0 25px var(--accent-glow);
+            }
+        }
+
+        .brand-text h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+            background: linear-gradient(90deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-text .sub {
+            color: var(--muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        nav {
+            display: flex;
+            gap: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.4rem;
+            border-radius: 14px;
+            border: 1px solid var(--panel-border);
+        }
+
+        .tab-btn {
+            padding: 0.6rem 1.25rem;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--muted);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--panel-border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, var(--paper1), var(--accent));
+            border: none;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn.primary:hover {
+            box-shadow: 0 8px 25px rgba(217, 70, 239, 0.5);
+        }
+
+        /* Main Content Layout */
+        .main-layout {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2.5rem;
+        }
+
+        /* Search Area */
+        .search-area {
+            background: var(--panel);
+            padding: 1.25rem;
+            border-radius: 20px;
+            border: 1px solid var(--panel-border);
+            margin-bottom: 2.5rem;
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.75rem 1.25rem;
+            border-radius: 14px;
+            border: 1px solid var(--panel-border);
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--paper1);
+            box-shadow: 0 0 15px var(--paper1-glow);
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Topic Grid */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 1.75rem;
+            border: 1px solid var(--panel-border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .card:hover {
+            transform: translateY(-12px) scale(1.03) rotateX(2deg) rotateY(2deg);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.05), transparent);
+            pointer-events: none;
+        }
+
+        .card.paper1:hover {
+            box-shadow: 0 20px 40px -10px var(--paper1-glow);
+        }
+
+        .card.paper2:hover {
+            box-shadow: 0 20px 40px -10px var(--paper2-glow);
+        }
+
+        .badge {
+            padding: 0.3rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            width: fit-content;
+            margin-bottom: 1rem;
+        }
+
+        .paper1 .badge {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .paper2 .badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .card ul {
+            padding: 0;
+            margin: 1.25rem 0;
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .card li {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            padding: 0.75rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card li .topic-text {
+            color: var(--text-dim);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .card li .example-text {
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-family: 'Outfit', monospace;
+            font-weight: 700;
+            background: rgba(217, 70, 239, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            width: fit-content;
+        }
+
+        .card:hover li {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .card:hover li .topic-text {
+            color: #fff;
+        }
+
+        /* Sidebar Widgets */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .widget {
+            background: var(--panel);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 1.75rem;
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Pomodoro Timer */
+        .timer-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .timer-svg {
+            transform: rotate(-90deg);
+        }
+
+        .timer-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 8;
+        }
+
+        .timer-progress {
+            fill: none;
+            stroke: var(--timer-color);
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            background: var(--glass-white);
+            color: #fff;
+        }
+
+        .btn-small.active {
+            background: var(--timer-color);
+        }
+
+        /* Countdown Widget */
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .countdown-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+
+        .countdown-val {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* To-Do List */
+        .todo-input-wrap {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .todo-input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .todo-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            margin-bottom: 0.5rem;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .todo-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--glass-border);
+        }
+
+        .todo-item.completed {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        .todo-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+            border: 2px solid var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .todo-check.active {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .todo-text {
+            flex: 1;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .todo-del {
+            cursor: pointer;
+            color: var(--error);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .todo-item:hover .todo-del {
+            opacity: 1;
+        }
+
+        /* Confetti Effect */
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            pointer-events: none;
+            z-index: 50;
+            border-radius: 50%;
+            animation: celebrate 1s forwards cubic-bezier(0, .5, .5, 1);
+        }
+
+        @keyframes celebrate {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Modals and Quiz (Inherited and Enhanced) */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.9);
+            backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: modal-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modal-pop {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-content {
+            background: #0f172a;
+            width: 100%;
+            max-width: 760px;
+            border-radius: 32px;
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 2rem 2.5rem;
+            border-bottom: 1px solid var(--panel-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 1.5rem 2.5rem;
+            border-top: 1px solid var(--panel-border);
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .q-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), transparent);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--panel-border);
+        }
+
+        .q-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+
+        .q-input {
+            width: 100%;
+            padding: 1.25rem;
+            background: #020617;
+            border: 2px solid var(--panel-border);
+            border-radius: 16px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .q-input:focus {
+            border-color: var(--paper1);
+            box-shadow: 0 0 20px var(--paper1-glow);
+            outline: none;
+        }
+
+        /* Notifications */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--paper1));
+            color: white;
+            padding: 1.25rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px var(--accent-glow);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: toast-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-weight: 700;
+        }
+
+        @keyframes toast-in {
+            from {
+                opacity: 0;
+                transform: translateY(100px) scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .toast-close {
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 1100px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                display: grid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            .main-layout {
+                padding: 0 1rem;
+            }
+
+            .brand-text h1 {
+                font-size: 1.2rem;
+            }
+
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+
+            .controls .btn span {
+                display: none;
+            }
+
+            .controls .btn {
+                padding: 0.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mouse-glow" style="--mx: 0px; --my: 0px;"></div>
+
+    <header>
+        <div class="brand">
+            <div class="logo">G8</div>
+            <div class="brand-text">
+                <h1>Mathematics</h1>
+                <div class="sub">Vibrant Grade 8 Interactive Hub</div>
+            </div>
+        </div>
+
+        <nav id="paper-nav">
+            <button class="tab-btn active" data-paper="paper1">Paper 1</button>
+            <button class="tab-btn" data-paper="paper2">Paper 2</button>
+        </nav>
+
+        <div class="controls">
+            <button id="btn-quiz" class="btn primary">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path
+                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
+                    </path>
+                </svg>
+                <span>Launch Quiz</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-layout">
+        <div class="content-area">
+            <div class="search-area">
+                <div class="search-box">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+                        style="opacity: 0.6; color: var(--paper1)">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Search for theorems, ratios, or formulas...">
+                </div>
+                <button id="btn-export" class="btn ghost">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                    </svg>
+                    <span>Full Guide</span>
+                </button>
+            </div>
+
+            <div id="paper1-grid" class="grid section-view"></div>
+            <div id="paper2-grid" class="grid section-view" style="display: none;"></div>
+        </div>
+
+        <aside class="sidebar">
+            <!-- Pomodoro Timer Widget -->
+            <section class="widget">
+                <div class="widget-title">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+                        style="color: var(--timer-color)">
+                        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Focus Timer
+                </div>
+                <div class="timer-container">
+                    <svg class="timer-svg" width="180" height="180">
+                        <circle class="timer-bg" cx="90" cy="90" r="80"></circle>
+                        <circle id="timer-progress" class="timer-progress" cx="90" cy="90" r="80"
+                            stroke-dasharray="502.6" stroke-dashoffset="0"></circle>
+                    </svg>
+                    <div id="timer-display" class="timer-text">25:00</div>
+                </div>
+                <div class="timer-controls">
+                    <button id="timer-start" class="btn-small active">Start</button>
+                    <button id="timer-reset" class="btn-small">Reset</button>
+                </div>
+            </section>
+
+            <section class="widget">
+                <div class="widget-title" style="justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24" style="color: var(--accent)">
+                            <path
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        Final Exam
+                    </div>
+                    <button id="edit-exam-date"
+                        style="background:none; border:none; color:var(--muted); cursor:pointer; padding:2px;">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="countdown-view">
+                    <div class="countdown-grid">
+                        <div class="countdown-item">
+                            <span id="cd-days" class="countdown-val">00</span>
+                            <span class="countdown-label">Days</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="cd-hours" class="countdown-val">00</span>
+                            <span class="countdown-label">Hours</span>
+                        </div>
+                    </div>
+                    <div id="exam-label"
+                        style="margin-top: 1rem; color: var(--muted); font-size: 0.75rem; text-align: center; font-weight: 600; text-transform: uppercase;">
+                        Set Your Exam Date</div>
+                </div>
+                <div id="exam-edit-view" style="display: none; margin-top:0.5rem;">
+                    <input type="date" id="exam-date-input"
+                        style="width:100%; padding:0.6rem; border-radius:10px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:#fff; outline:none; margin-bottom:0.5rem;">
+                    <button id="save-exam-date" class="btn-small active" style="width:100%">Save Date</button>
+                </div>
+            </section>
+
+            <!-- To-Do Widget -->
+            <section class="widget">
+                <div class="widget-title">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+                        style="color: var(--success)">
+                        <path
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+                        </path>
+                    </svg>
+                    Study Goals
+                </div>
+                <div class="todo-input-wrap">
+                    <input type="text" id="todo-input" class="todo-input" placeholder="Add a focus goal...">
+                    <button id="todo-add" class="btn-small active">+</button>
+                </div>
+                <ul id="todo-list" class="todo-list"></ul>
+            </section>
+        </aside>
+    </main>
+
+    <!-- Modals -->
+    <div id="quiz-config-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="margin:0">Quiz Setup</h2>
+                <button class="btn ghost close-modal" style="padding: 0.5rem; border-radius: 50%;">✕</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 2.5rem;">
+                    <label
+                        style="display:block; margin-bottom:1rem; font-weight:800; color:var(--muted); font-size:0.8rem; text-transform:uppercase;">Topic
+                        Selection</label>
+                    <div class="options-group" id="paper-select"
+                        style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                        <button class="tab-btn active" style="padding: 1rem; border: 2px solid var(--panel-border)"
+                            data-val="paper1">Paper 1</button>
+                        <button class="tab-btn" style="padding: 1rem; border: 2px solid var(--panel-border)"
+                            data-val="paper2">Paper 2</button>
+                        <button class="tab-btn" style="padding: 1rem; border: 2px solid var(--panel-border)"
+                            data-val="both">Mixed</button>
+                    </div>
+                </div>
+                <div>
+                    <label
+                        style="display:block; margin-bottom:1rem; font-weight:800; color:var(--muted); font-size:0.8rem; text-transform:uppercase;">Question
+                        Density</label>
+                    <select id="config-count"
+                        style="width:100%; padding:1rem; border-radius:16px; background:#020617; border:2px solid var(--panel-border); color:#fff; font-weight:700; outline:none;">
+                        <option value="5">Rapid Fire (5)</option>
+                        <option value="10">Deep Dive (10)</option>
+                        <option value="15" selected>Standard (15)</option>
+                        <option value="20">Exam Prep (20)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="start-now" class="btn primary" style="width: 100%; justify-content: center;">Begin
+                    Assessment</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-session-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 820px;">
+            <div class="modal-header">
+                <h3>Assessment</h3>
+                <span id="quiz-progress" class="badge"
+                    style="background: linear-gradient(90deg, var(--paper1), var(--accent)); color: white;">Q1 /
+                    15</span>
+            </div>
+            <div class="modal-body" id="quiz-content"></div>
+            <div class="modal-footer" id="quiz-footer">
+                <button id="q-prev" class="btn ghost">Back</button>
+                <div style="flex:1"></div>
+                <button id="q-next" class="btn primary">Next</button>
+                <button id="q-submit" class="btn primary" style="display: none;">Finish & Grade</button>
+                <button id="q-done" class="btn primary" style="display: none;">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* Data Structure */
+        const TOPICS = [
+            {
+                paper: 1, title: 'Whole Numbers', tags: 'calculations prime factors hcf lcm ratio rate vat interest exchange',
+                content: [
+                    { topic: 'Estimation, long division, rounding', ex: '456 ÷ 12 = 38' },
+                    { topic: 'Prime factorisation, HCF & LCM', ex: '24 = 2³ × 3' },
+                    { topic: 'Rate & ratio sharing', ex: '100 in 2:3 → 40:60' },
+                    { topic: 'VAT, hire purchase and exchange', ex: '100 + 15% = 115' }
+                ]
+            },
+            {
+                paper: 1, title: 'Integers', tags: 'integers ordering comparing roots squares cubes inversions',
+                content: [
+                    { topic: 'Ordering and comparing integers', ex: '-5 < -2' },
+                    { topic: 'Arithmetic operations', ex: '-8 + 10 = 2' },
+                    { topic: 'Squares, cubes, roots', ex: '√64 = 8' },
+                    { topic: 'Inverse properties', ex: '-x = 5 → x = -5' }
+                ]
+            },
+            {
+                paper: 1, title: 'Common Fractions', tags: 'fractions percentages reciprocals increase decrease',
+                content: [
+                    { topic: 'Fraction division', ex: '½ ÷ ¼ = 2' },
+                    { topic: 'Percentage increase/decrease', ex: '50 + 10% = 55' },
+                    { topic: 'Reciprocals and mixed numbers', ex: 'Recip of ⅔ is 1.5' }
+                ]
+            },
+            {
+                paper: 1, title: 'Decimal Fractions', tags: 'decimals multiplication division rounding calculator',
+                content: [
+                    { topic: 'Multiplying & dividing decimals', ex: '0.5 × 0.2 = 0.1' },
+                    { topic: 'Rounding and estimation', ex: '3.14159 ≈ 3.14' },
+                    { topic: 'Calculator context problems', ex: 'Area of ◯ = πr²' }
+                ]
+            },
+            {
+                paper: 1, title: 'Exponents', tags: 'scientific notation laws powers negative zero',
+                content: [
+                    { topic: 'Exponential & scientific notation', ex: '5000 = 5 × 10³' },
+                    { topic: 'Exponent laws', ex: 'a² × a³ = a⁵' },
+                    { topic: 'Problem solving with powers', ex: '2³ = 8' }
+                ]
+            },
+            {
+                paper: 1, title: 'Numeric Patterns', tags: 'patterns numeric geometric extend rules',
+                content: [
+                    { topic: 'Investigate numeric patterns', ex: '2, 4, 6... next 8' },
+                    { topic: 'Extension and rule generation', ex: 'Rule: Tₙ = 2n' }
+                ]
+            },
+            {
+                paper: 1, title: 'Functions', tags: 'flow diagrams tables formulae rules',
+                content: [
+                    { topic: 'Tables and Formulae', ex: 'y = 2x + 1' },
+                    { topic: 'Input-output logic', ex: 'In 3 → Out 7' },
+                    { topic: 'Equivalent forms', ex: 'Table vs Equation' }
+                ]
+            },
+            {
+                paper: 1, title: 'Algebraic Expressions', tags: 'terms variables coefficients simplify substitute',
+                content: [
+                    { topic: 'Terms and variables', ex: '3x: 3 is coeff' },
+                    { topic: 'Simplify and evaluate', ex: '2x + 3x = 5x' }
+                ]
+            },
+            {
+                paper: 1, title: 'Algebraic Equations', tags: 'equations substitution inverses word problems',
+                content: [
+                    { topic: 'Additive/multi inverses', ex: 'x + 5 = 10 → x = 5' },
+                    { topic: 'Substitution tables', ex: 'Solve y if x=2' }
+                ]
+            },
+            {
+                paper: 1, title: 'Graphs', tags: 'linear nonlinear cartesian plane plot points discrete continuous',
+                content: [
+                    { topic: 'Graph analysis', ex: 'Grad = rise/run' },
+                    { topic: 'Plotting on Cartesian plane', ex: 'Point (2, 3)' }
+                ]
+            },
+            {
+                paper: 2, title: 'Geometry of Lines', tags: 'angles perpendicular parallel transversal',
+                content: [
+                    { topic: 'Angle relationships', ex: 'Vert. Opp. ∠s equal' },
+                    { topic: 'Parallel & transversals', ex: 'Alt/Corr ∠s' },
+                    { topic: 'Geometric problem solving', ex: 'Find unknown x' }
+                ]
+            },
+            {
+                paper: 2, title: '2D Geometries', tags: 'triangles equilateral isosceles right-angled similarity congruence',
+                content: [
+                    { topic: 'Triangle properties', ex: 'Sum ∠s = 180°' },
+                    { topic: 'Solving for unknowns', ex: 'x+40+60=180' },
+                    { topic: 'Congruence & similarity', ex: 'SSS, SAS, AAS' }
+                ]
+            },
+            {
+                paper: 2, title: 'Theorem of Pythagoras', tags: 'right-angled theorem irrational surds',
+                content: [
+                    { topic: 'Hypotenuse & side calc', ex: '3² + 4² = c²' },
+                    { topic: 'Irrational surds', ex: '√50 ≈ 7.07' },
+                    { topic: 'Right-angle determination', ex: 'a²+b²=c²' }
+                ]
+            },
+            {
+                paper: 2, title: 'Measurement', tags: 'circles polygons rectangles triangles convert units',
+                content: [
+                    { topic: 'Perimeter & Area formulae', ex: 'Area ◯ = πr²' },
+                    { topic: 'Complex shape decomposition', ex: 'L-shape = 2 Rects' },
+                    { topic: 'SI unit conversions', ex: '1000m = 1km' }
+                ]
+            }
+        ];
+
+        const generators = {
+            pythag: () => {
+                const a = Math.floor(Math.random() * 8) + 3;
+                const b = Math.floor(Math.random() * 8) + 5;
+                const c = Math.sqrt(a * a + b * b).toFixed(2);
+                return { q: `In a right triangle, side short sides are ${a} and ${b}. Find the hypotenuse (round to 2 dp).`, a: [String(parseFloat(c)), c] };
+            },
+            equation: () => {
+                const x = Math.floor(Math.random() * 8) + 2;
+                const m = Math.floor(Math.random() * 6) + 2;
+                const c = Math.floor(Math.random() * 10) + 1;
+                const y = m * x + c;
+                return { q: `Solve for x: ${m}x + ${c} = ${y}`, a: [String(x)] };
+            },
+            ratio: () => {
+                const p1 = Math.floor(Math.random() * 3) + 2;
+                const p2 = Math.floor(Math.random() * 3) + 4;
+                const factor = Math.floor(Math.random() * 20) + 5;
+                const total = (p1 + p2) * factor;
+                return { q: `Divide $${total} in the ratio ${p1}:${p2}. How much is the larger share?`, a: [String(Math.max(p1, p2) * factor)] };
+            }
+        };
+
+        const fixedQuestions = {
+            paper1: [
+                { q: "Simplify: 4x + 7x - 2x", a: ["9x", "9 x"] },
+                { q: "Evaluation: If a=3, find 4a - 5", a: ["7"] },
+                { q: "Scientific: 45000 in scientific notation.", a: ["4.5e4", "4.5x10^4", "4.5*10^4"] },
+                { q: "Fraction: What is 1/2 + 1/4?", a: ["0.75", "3/4"] },
+                { q: "Solve: 2x = 50", a: ["25"] }
+            ],
+            paper2: [
+                { q: "Area: Rectangle with L=12, W=4", a: ["48"] },
+                { q: "Angles: Interior sum of a triangle (deg)?", a: ["180"] },
+                { q: "Square: Perimeter of square side 7", a: ["28"] },
+                { q: "Sides: How many sides in a pentagon?", a: ["5"] },
+                { q: "Convert: 5000m to kilometers", a: ["5", "5km", "5.0"] }
+            ]
+        };
+
+        /* State Manager */
+        let DATA = { topics: TOPICS, filter: '', paper: 'paper1' };
+        let QUIZ = { pool: [], userAns: [], idx: 0, scoring: null };
+        let TIMER = { timeLeft: 1500, interval: null, running: false, mode: 'study' };
+        let TODOS = JSON.parse(localStorage.getItem('studyHubTodos') || '[]');
+
+        /* UI Logic */
+        function render() {
+            const grids = { paper1: document.getElementById('paper1-grid'), paper2: document.getElementById('paper2-grid') };
+            const q = DATA.filter.toLowerCase();
+
+            Object.keys(grids).forEach(key => {
+                const filtered = DATA.topics.filter(t => {
+                    const matchesMeta = t.title.toLowerCase().includes(q) || t.tags.toLowerCase().includes(q);
+                    const matchesContent = t.content.some(c =>
+                        c.topic.toLowerCase().includes(q) || c.ex.toLowerCase().includes(q)
+                    );
+                    return (t.paper === (key === 'paper1' ? 1 : 2)) && (matchesMeta || matchesContent);
+                });
+
+                grids[key].innerHTML = filtered.map(t => `
+                <article class="card ${key} scale-in" style="animation-delay: ${filtered.indexOf(t) * 0.05}s">
+                    <span class="badge">Module ${DATA.topics.indexOf(t) + 1}</span>
+                    <h3>${t.title}</h3>
+                    <ul>
+                        ${t.content.map(c => `
+                            <li>
+                                <span class="topic-text">${c.topic}</span>
+                                <span class="example-text">${c.ex}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </article>
+            `).join('');
+            });
+        }
+
+        /* Event Wiring */
+        function init() {
+            render();
+            updateCountdown();
+            renderTodos();
+
+            // Search
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                DATA.filter = e.target.value;
+                render();
+            });
+
+            // Tabs
+            document.querySelectorAll('.tab-btn[data-paper]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn[data-paper]').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    DATA.paper = btn.dataset.paper;
+                    updateViewMode('single');
+                });
+            });
+
+            // Full Guide
+            document.getElementById('btn-export').addEventListener('click', () => {
+                updateViewMode('all');
+            });
+
+            // Custom Date Toggle
+            document.getElementById('edit-exam-date').addEventListener('click', () => {
+                const v = document.getElementById('exam-edit-view');
+                const c = document.getElementById('countdown-view');
+                v.style.display = v.style.display === 'none' ? 'block' : 'none';
+                c.style.display = c.style.display === 'none' ? 'block' : 'none';
+            });
+
+            document.getElementById('save-exam-date').addEventListener('click', () => {
+                const dateStr = document.getElementById('exam-date-input').value;
+                if (dateStr) {
+                    localStorage.setItem('math_exam_date', dateStr);
+                    updateCountdown();
+                    document.getElementById('edit-exam-date').click();
+                }
+            });
+
+            // Modal triggers
+            document.getElementById('btn-quiz').addEventListener('click', () => document.getElementById('quiz-config-modal').classList.add('active'));
+            document.querySelectorAll('.close-modal').forEach(b => b.addEventListener('click', () => b.closest('.modal-overlay').classList.remove('active')));
+
+            // Quiz Setup
+            document.querySelectorAll('#paper-select .tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('#paper-select .tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+
+            document.getElementById('start-now').addEventListener('click', () => {
+                const paper = document.querySelector('#paper-select .active').dataset.val;
+                const count = parseInt(document.getElementById('config-count').value);
+                launchQuiz(paper, count);
+            });
+
+            // Quiz Nav
+            document.getElementById('q-prev').addEventListener('click', () => { if (QUIZ.idx > 0) { QUIZ.idx--; renderQ(); } });
+            document.getElementById('q-next').addEventListener('click', () => { if (QUIZ.idx < QUIZ.pool.length - 1) { QUIZ.idx++; renderQ(); } });
+            document.getElementById('q-submit').addEventListener('click', gradeQuiz);
+            document.getElementById('q-done').addEventListener('click', () => document.getElementById('quiz-session-modal').classList.remove('active'));
+
+            // Pomodoro
+            document.getElementById('timer-start').addEventListener('click', toggleTimer);
+            document.getElementById('timer-reset').addEventListener('click', resetTimer);
+
+            // Todo
+            document.getElementById('todo-add').addEventListener('click', addTodo);
+            document.getElementById('todo-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') addTodo(); });
+
+            // Export
+            document.getElementById('btn-export').addEventListener('click', () => updateViewMode('all'));
+        }
+
+        /* Quiz Engine */
+        function launchQuiz(paper, count) {
+            let basePool = paper === 'paper1' ? fixedQuestions.paper1 : (paper === 'paper2' ? fixedQuestions.paper2 : [...fixedQuestions.paper1, ...fixedQuestions.paper2]);
+            let selected = shuffle(basePool).slice(0, Math.min(count, basePool.length));
+
+            while (selected.length < count) {
+                const gk = Object.keys(generators);
+                const g = generators[gk[Math.floor(Math.random() * gk.length)]]();
+                selected.push({ q: g.q, a: g.a, auto: true });
+            }
+
+            QUIZ = { pool: shuffle(selected), userAns: Array(count).fill(''), idx: 0 };
+            document.getElementById('quiz-config-modal').classList.remove('active');
+            document.getElementById('quiz-session-modal').classList.add('active');
+            renderQ();
+        }
+
+        function renderQ() {
+            const q = QUIZ.pool[QUIZ.idx];
+            const container = document.getElementById('quiz-content');
+            document.getElementById('quiz-progress').innerText = `Problem ${QUIZ.idx + 1} / ${QUIZ.pool.length}`;
+
+            container.innerHTML = `
+            <div class="q-card">
+                <div style="font-size: 0.8rem; font-weight: 800; color: var(--paper1); text-transform: uppercase; margin-bottom: 1rem;">
+                    ${q.auto ? 'System Generated' : 'Foundations Check'}
+                </div>
+                <div class="q-text">${q.q}</div>
+                <input type="text" class="q-input" id="ans" placeholder="Type answer..." value="${QUIZ.userAns[QUIZ.idx]}">
+            </div>
+        `;
+
+            const input = document.getElementById('ans');
+            input.focus();
+            input.addEventListener('input', (e) => QUIZ.userAns[QUIZ.idx] = e.target.value);
+
+            document.getElementById('q-prev').style.display = QUIZ.idx === 0 ? 'none' : 'block';
+            document.getElementById('q-next').style.display = QUIZ.idx === QUIZ.pool.length - 1 ? 'none' : 'block';
+            document.getElementById('q-submit').style.display = QUIZ.idx === QUIZ.pool.length - 1 ? 'block' : 'none';
+            document.getElementById('q-done').style.display = 'none';
+            document.getElementById('quiz-footer').style.display = 'flex';
+        }
+
+        function gradeQuiz() {
+            let score = 0;
+            const details = QUIZ.pool.map((q, i) => {
+                const u = QUIZ.userAns[i].trim().toLowerCase();
+                const correct = q.a.some(valid => {
+                    const cv = valid.toString().trim().toLowerCase();
+                    if (!isNaN(u) && !isNaN(cv)) return Math.abs(parseFloat(u) - parseFloat(cv)) < 0.1;
+                    return u === cv;
+                });
+                if (correct) score++;
+                return { ...q, u, isCorrect: correct };
+            });
+
+            const Container = document.getElementById('quiz-content');
+            const percent = Math.round((score / QUIZ.pool.length) * 100);
+
+            Container.innerHTML = `
+            <div style="text-align:center">
+                <div style="font-size: 4rem; font-weight: 900; color: var(--accent); margin-bottom: 0.5rem;">${score} <span style="font-size: 1.5rem; color: var(--muted)">/ ${QUIZ.pool.length}</span></div>
+                <h2 style="margin-bottom: 2rem;">${percent}% Proficiency</h2>
+                <div style="text-align: left; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 20px;">
+                    ${details.map((d, i) => `
+                        <div style="padding: 1rem 0; border-bottom: 1px solid var(--panel-border); color: ${d.isCorrect ? 'var(--success)' : 'var(--error)'}">
+                            <strong>Q${i + 1}:</strong> ${d.q}<br>
+                            <small style="color: var(--muted)">Accepted: ${d.a[0]} | Provided: ${d.u || 'None'}</small>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+            document.getElementById('q-prev').style.display = 'none';
+            document.getElementById('q-next').style.display = 'none';
+            document.getElementById('q-submit').style.display = 'none';
+            document.getElementById('q-done').style.display = 'block';
+        }
+
+        /* Timer Logic */
+        function toggleTimer() {
+            if (TIMER.running) {
+                clearInterval(TIMER.interval);
+                document.getElementById('timer-start').innerText = 'Start';
+            } else {
+                TIMER.interval = setInterval(updateTimer, 1000);
+                document.getElementById('timer-start').innerText = 'Pause';
+            }
+            TIMER.running = !TIMER.running;
+        }
+
+        function updateTimer() {
+            if (TIMER.timeLeft <= 0) {
+                clearInterval(TIMER.interval);
+                alert("Focus session complete! Take a break.");
+                resetTimer();
+                return;
+            }
+            TIMER.timeLeft--;
+            const m = Math.floor(TIMER.timeLeft / 60);
+            const s = TIMER.timeLeft % 60;
+            document.getElementById('timer-display').innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+            const dash = 502.6; // 2 * pi * r (80)
+            const offset = dash - (TIMER.timeLeft / 1500) * dash;
+            document.getElementById('timer-progress').style.strokeDashoffset = offset;
+        }
+
+        function resetTimer() {
+            clearInterval(TIMER.interval);
+            TIMER.running = false;
+            TIMER.timeLeft = 1500;
+            document.getElementById('timer-display').innerText = '25:00';
+            document.getElementById('timer-start').innerText = 'Start';
+            document.getElementById('timer-progress').style.strokeDashoffset = 0;
+        }
+
+        /* Notification Logic */
+        function showNotification(msg) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <span>${msg}</span>
+            <div class="toast-close" onclick="this.parentElement.remove()">✕</div>
+        `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 10000);
+        }
+
+        function checkPendingGoals() {
+            const pending = TODOS.filter(t => !t.done);
+            if (pending.length > 0) {
+                showNotification(`Reminder: You have ${pending.length} study goals to complete!`);
+            }
+        }
+
+        // Set reminder interval (5 minutes = 300,000ms)
+        setInterval(checkPendingGoals, 300000);
+
+        function updateViewMode(mode) {
+            const grids = { paper1: document.getElementById('paper1-grid'), paper2: document.getElementById('paper2-grid') };
+            if (mode === 'all') {
+                document.querySelectorAll('.tab-btn[data-paper]').forEach(b => b.classList.add('active'));
+                Object.values(grids).forEach(g => g.style.display = 'grid');
+            } else {
+                Object.values(grids).forEach(g => g.style.display = 'none');
+                document.getElementById(`${DATA.paper}-grid`).style.display = 'grid';
+            }
+        }
+
+        /* Other Utilities */
+        function updateCountdown() {
+            let dateStr = localStorage.getItem('math_exam_date');
+            if (!dateStr) {
+                document.getElementById('exam-label').innerText = 'Set Your Exam Date';
+                return;
+            }
+
+            const examDate = new Date(dateStr + 'T09:00:00');
+            const now = new Date();
+            const diff = examDate - now;
+
+            const options = { month: 'short', day: 'numeric' };
+            document.getElementById('exam-label').innerText = `Countdown to ${examDate.toLocaleDateString(undefined, options)}`;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+                document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+            } else {
+                document.getElementById('cd-days').innerText = '00';
+                document.getElementById('cd-hours').innerText = '00';
+            }
+        }
+
+        function renderTodos() {
+            const list = document.getElementById('todo-list');
+            list.innerHTML = TODOS.map((t, i) => `
+            <li class="todo-item ${t.done ? 'completed' : ''}">
+                <div class="todo-check ${t.done ? 'active' : ''}" onclick="toggleTodo(${i})"></div>
+                <span class="todo-text">${t.text}</span>
+                <span class="todo-del" onclick="delTodo(${i})">✕</span>
+            </li>
+        `).join('');
+            localStorage.setItem('studyHubTodos', JSON.stringify(TODOS));
+        }
+
+        function addTodo() {
+            const input = document.getElementById('todo-input');
+            if (!input.value) return;
+            TODOS.push({ text: input.value, done: false });
+            input.value = '';
+            renderTodos();
+        }
+
+        window.toggleTodo = (i) => {
+            TODOS[i].done = !TODOS[i].done;
+            if (TODOS[i].done) triggerConfetti(event.target);
+            renderTodos();
+        };
+
+        function triggerConfetti(el) {
+            const rect = el.getBoundingClientRect();
+            for (let i = 0; i < 30; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                const colors = ['#3b82f6', '#10b981', '#d946ef', '#f59e0b', '#ef4444'];
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                c.style.left = (rect.left + rect.width / 2) + 'px';
+                c.style.top = (rect.top + rect.height / 2) + 'px';
+                c.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                c.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 1000);
+            }
+        }
+        window.delTodo = (i) => { TODOS.splice(i, 1); renderTodos(); };
+
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function exportTxt() {
+            let out = "GRADE 8 MATHEMATICS HUB - STUDY GUIDE\n" + "=".repeat(40) + "\n\n";
+            TOPICS.forEach(t => {
+                out += `[${t.paper === 1 ? 'PAPER 1' : 'PAPER 2'}] ${t.title}\n`;
+                t.content.forEach(c => out += ` - ${c.topic} (Example: ${c.ex})\n`);
+                out += "\n";
+            });
+            const blob = new Blob([out], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'Math_Study_Guide.txt';
+            a.click();
+        }
+
+        // Mouse movement tracking
+        window.addEventListener('mousemove', (e) => {
+            const glow = document.getElementById('mouse-glow');
+            glow.style.setProperty('--mx', e.clientX + 'px');
+            glow.style.setProperty('--my', e.clientY + 'px');
+        });
+
+        init();
+    </script>
+
+</body>
+
+</html>
