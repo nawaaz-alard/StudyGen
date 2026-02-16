@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Grade 8 Life Sciences — Natural Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;700;800&family=Patrick+Hand&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="src/styles/main.css?v=2">
+    <link rel="stylesheet" href="src/styles/dragdrop.css">
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#15803d">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2961/2961226.png">
+
+    <!-- PWA Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW registration failed: ', err));
+            });
+        }
+    </script>
+
+    <!-- Scripts -->
+    <script src="src/scripts/data.js" defer></script>
+    <script src="src/scripts/gamification.js" defer></script>
+    <script src="src/scripts/widgets.js" defer></script>
+    <script src="src/scripts/canvas.js" defer></script>
+    <script src="src/scripts/app.js" defer></script>
+</head>
+
+<body>
+    <div id="mouse-glow" style="--mx: 0px; --my: 0px;"></div>
+
+    <header>
+        <div class="brand">
+            <div class="logo">LS</div>
+            <div class="brand-text">
+                <h1>Life Sciences</h1>
+                <div class="sub">Grade 8 Natural World Explorer</div>
+            </div>
+        </div>
+
+        <div class="user-profile" onclick="document.getElementById('xp-modal').classList.add('active')"
+            title="Click to see how to earn XP">
+            <div id="user-level" class="level-badge">Lvl 1</div>
+            <div class="xp-container">
+                <div class="xp-bar">
+                    <div id="xp-bar-fill" style="width: 0%"></div>
+                </div>
+                <div id="user-xp" class="xp-text">0 / 100 XP</div>
+            </div>
+        </div>
+
+
+        <nav id="paper-nav">
+            <button class="tab-btn active" data-paper="paper1">Term 1</button>
+            <button class="tab-btn" data-paper="paper2">Term 2</button>
+        </nav>
+
+        <div class="controls">
+            <button class="btn ghost" onclick="document.getElementById('tools-modal').classList.add('active')">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                    </path>
+                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span>Tools</span>
+            </button>
+            <button id="btn-focus" class="icon-btn" aria-label="Toggle Focus Mode" onclick="GAMIFICATION.toggleFocus()"
+                title="Toggle Focus Mode">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+            </button>
+
+            <button class="icon-btn" aria-label="Shop"
+                onclick="document.getElementById('shop-modal').classList.add('active'); GAMIFICATION.updateShopUI();">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+            </button>
+            <button id="btn-quiz" class="btn primary" aria-label="Start Quiz">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path
+                        d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                    </path>
+                </svg>
+                <span>Launch Quiz</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-layout">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2>Welcome, Explorer!</h2>
+                <p>Ready to unlock the secrets of the natural world?</p>
+                <button id="btn-hero-quiz" class="btn primary" onclick="document.getElementById('btn-quiz').click()">
+                    <span>Start Daily Challenge</span>
+                </button>
+                <button class="btn ghost" onclick="launchBlitzSetup()"
+                    style="margin-left:1rem; border-color:rgba(255,255,255,0.3); color:#fff;">
+                    ⚡ Speed Blitz
+                </button>
+            </div>
+            <div class="floating-particles" id="particles">
+                <!-- Particles generated by JS/CSS -->
+                <div class="particle p1"></div>
+                <div class="particle p2"></div>
+                <div class="particle p3"></div>
+                <div class="particle p4"></div>
+                <div class="particle p5"></div>
+            </div>
+        </section>
+
+        <div class="content-area">
+            <div class="search-area">
+                <div class="search-box">
+                    <svg class="search-icon" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"
+                        viewBox="0 0 24 24">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" id="search-input"
+                        placeholder="Search for photosynthesis, producers, consumers..." aria-label="Search content">
+                </div>
+                <!-- Removed export button for simplicity as per user request focus -->
+            </div>
+
+            <div id="paper1-grid" class="grid section-view"></div>
+            <div id="paper2-grid" class="grid section-view" style="display: none;"></div>
+        </div>
+
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-copy">&copy; 2026 Life Science Explorer. Aligned to Grade 8 CAPS. <span class="reset-link"
+                onclick="GAMIFICATION.resetProgress()">Reset Progress</span></div>
+        <div class="footer-links">
+            <a href="#" class="footer-link">Syllabus</a>
+            <button class="footer-link" style="background:none; border:none; padding:0; font:inherit; cursor:pointer;"
+                onclick="document.getElementById('about-modal').classList.add('active')">About</button>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="quiz-config-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="margin:0">Quiz Setup</h2>
+                <button class="btn ghost close-modal btn-close-round">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-large">
+                    <label class="modal-label">Topic Selection</label>
+                    <div class="options-group options-grid" id="paper-select">
+                        <button class="tab-btn active option-btn" data-val="paper1">Term 1</button>
+                        <button class="tab-btn option-btn" data-val="paper2">Term 2</button>
+                        <button class="tab-btn option-btn" data-val="both">Mixed</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="modal-label">Question Density</label>
+                    <select id="config-count" class="select-input">
+                        <option value="5">Rapid Check (5)</option>
+                        <option value="10">Deep Dive (10)</option>
+                        <option value="15" selected>Standard (15)</option>
+                        <option value="20">Exam Prep (20)</option>
+                    </select>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="config-instant" class="custom-checkbox">
+                    <label for="config-instant" class="checkbox-label">Enable Instant Feedback</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="start-now" class="btn primary btn-full">Start Assesment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Modal -->
+    <div id="shop-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Bio-Shop</h3>
+                <div class="badge" style="margin:0; background:rgba(202, 138, 4, 0.1); color:var(--accent);">
+                    <span id="shop-balance">0</span> XP
+                </div>
+                <button class="btn ghost close-modal btn-close-round">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="sub text-muted-mb">Spend your hard-earned XP on upgrades!</p>
+
+                <h4 class="shop-header">Themes</h4>
+                <div class="shop-grid">
+                    <!-- Neon Theme -->
+                    <div class="shop-item" id="item-theme-neon">
+                        <div class="item-icon item-icon-neon">⚡</div>
+                        <div class="item-details">
+                            <strong>Neon Mode</strong>
+                            <div class="item-cost">100 XP</div>
+                        </div>
+                        <button class="btn-small"
+                            onclick="GAMIFICATION.buyItem('theme-neon', 100, 'theme')">Buy</button>
+                    </div>
+
+                    <!-- Vintage Theme -->
+                    <div class="shop-item" id="item-theme-vintage">
+                        <div class="item-icon item-icon-vintage">📜</div>
+                        <div class="item-details">
+                            <strong>Vintage</strong>
+                            <div class="item-cost">200 XP</div>
+                        </div>
+                        <button class="btn-small"
+                            onclick="GAMIFICATION.buyItem('theme-vintage', 200, 'theme')">Buy</button>
+                    </div>
+                </div>
+
+                <h4 class="shop-header-badges">Badges</h4>
+                <div class="shop-grid">
+                    <div class="shop-item" id="item-badge-micro">
+                        <div class="item-icon">🔬</div>
+                        <div class="item-details">
+                            <strong>Microscope Master</strong>
+                            <div class="item-cost">50 XP</div>
+                        </div>
+                        <button class="btn-small"
+                            onclick="GAMIFICATION.buyItem('badge-micro', 50, 'badge')">Buy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-session-modal" class="modal-overlay">
+        <div class="modal-content modal-wide">
+            <div class="modal-header">
+                <h3>Assessment</h3>
+                <span id="quiz-progress" class="badge badge-progress">Q1 / 15</span>
+            </div>
+            <div class="modal-body" id="quiz-content"></div>
+            <div class="modal-footer" id="quiz-footer">
+                <button id="q-prev" class="btn ghost">Back</button>
+                <div style="flex:1"></div>
+                <button id="q-next" class="btn primary">Next</button>
+                <button id="q-submit" class="btn primary" style="display: none;">Finish & Grade</button>
+                <button id="q-done" class="btn primary" style="display: none;">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>About Life Sciences Explorer</h3>
+                <button class="btn ghost close-modal btn-close-round">✕</button>
+            </div>
+            <div class="modal-body">
+                <p>This study aid is designed for <strong>Grade 8 Natural Sciences</strong> students, focusing on the
+                    "Life and Living" strand.</p>
+                <div style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <strong>Topics Covered:</strong>
+                    <ul style="margin-top:0.5rem; padding-left:1.2rem; color:var(--text-dim)">
+                        <li>Photosynthesis & Respiration</li>
+                        <li>Interactions in the Environment</li>
+                        <li>Microorganisms</li>
+                        <li>Ecosystem Balance</li>
+                    </ul>
+                </div>
+                <p style="font-size:0.9rem; color:var(--muted)">Use the <strong>Study Timer</strong> for Pomodoro
+                    sessions and the <strong>Quiz</strong> to test your knowledge to earn Bio-Points!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- XP Guide Modal -->
+    <div id="xp-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>How to Earn Bio-Points</h3>
+                <button class="btn ghost close-modal btn-close-round">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="color:var(--muted); margin-bottom:1.5rem;">Earn XP to level up from Novice to Master
+                    Scientist!</p>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tools Modal -->
+    <div id="tools-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Study Tools</h3>
+                <button class="btn ghost close-modal btn-close-round">✕</button>
+            </div>
+            <div class="modal-body grid-2-col">
+
+                <!-- Timer Widget Moved Here -->
+                <section class="widget" style="margin:0">
+                    <div class="widget-title">
+                        <svg class="text-timer-color" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Study Timer
+                    </div>
+                    <div class="timer-container" style="transform: scale(0.9);">
+                        <svg class="timer-svg" width="180" height="180">
+                            <circle class="timer-bg" cx="90" cy="90" r="80"></circle>
+                            <circle id="timer-progress" class="timer-progress" cx="90" cy="90" r="80"
+                                stroke-dasharray="502.6" stroke-dashoffset="0"></circle>
+                        </svg>
+                        <div id="timer-display" class="timer-text">25:00</div>
+                    </div>
+                    <div class="timer-controls">
+                        <button id="timer-start" class="btn-small active">Start</button>
+                        <button id="timer-reset" class="btn-small">Reset</button>
+                    </div>
+                </section>
+
+                <!-- Todo Widget Moved Here -->
+                <section class="widget" style="margin:0">
+                    <div class="widget-title">
+                        <svg class="text-success" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Key Concepts
+                    </div>
+                    <div class="todo-input-wrap">
+                        <input type="text" id="todo-input" class="todo-input" placeholder="Add concept...">
+                        <button id="todo-add" class="btn-small active">+</button>
+                    </div>
+                    <ul id="todo-list" class="todo-list" style="max-height: 200px; overflow-y: auto;"></ul>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Blitz Modal -->
+    <div id="blitz-modal" class="modal-overlay">
+        <div class="modal-content modal-wide blitz-content">
+            <div class="modal-header">
+                <h3>Reaction Blitz</h3>
+                <div class="badge" style="background:var(--accent); color:#fff">Score: <span id="blitz-score">0</span>
+                </div>
+                <button class="btn ghost close-modal btn-close-round" onclick="stopBlitz()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="blitz-game-area" class="blitz-area">
+                    <!-- Words fall here -->
+                </div>
+
+                <!-- Start Overlay -->
+                <div id="blitz-start-overlay" class="blitz-start-overlay">
+                    <h2 class="blitz-start-title" id="blitz-countdown">Ready?</h2>
+                    <button class="btn primary" onclick="startBlitzGame()" style="margin-top:1rem;">Start Game</button>
+                </div>
+            </div>
+            <div class="modal-footer blitz-controls-grid" id="blitz-controls">
+                <!-- Buttons injected by JS -->
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

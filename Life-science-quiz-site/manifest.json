@@ -1,0 +1,21 @@
+{
+  "name": "Life Science Explorer",
+  "short_name": "LifeSci",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f0fdf4",
+  "theme_color": "#15803d",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2961/2961226.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2961/2961226.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+/* Drag and Drop Styles */
+.dd-container {
+    margin: 1rem 0;
+}
+
+.dd-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dd-item {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    cursor: grab;
+    transition: all 0.2s;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dd-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dd-item.dragging {
+    opacity: 0.5;
+    background: var(--bg);
+}
+
+/* Matching Question Styles */
+.matching-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: start;
+}
+
+.match-left,
+.match-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.static-item {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    padding: 0 1rem;
+    border-radius: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    height: 56px;
+    /* Fixed height for alignment */
+    display: flex;
+    align-items: center;
+}
+
+.match-right .dd-item {
+    height: 56px;
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .matching-grid {
+        grid-template-columns: 1fr 1fr;
+        /* Keep side-by-side on mobile for matching context */
+        gap: 0.5rem;
+    }
+
+    .static-item,
+    .match-right .dd-item {
+        font-size: 0.75rem;
+        padding: 0 0.5rem;
+        height: 64px;
+        /* Taller touch targets */
+    }
+}
