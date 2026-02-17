@@ -17,7 +17,7 @@ const MOCK_MODULES: Module[] = [
 
   { id: 'math', name: 'Math Quiz', icon: <Calculator className="w-8 h-8" />, authorized: true, description: "Challenge your math skills." },
   { id: 'lifescience', name: 'Life Science', icon: <Atom className="w-8 h-8" />, authorized: true, description: "Biology and nature exploration." },
-  { id: 'afrikaans', name: 'Afrikaans Quiz', icon: <Award className="w-8 h-8" />, authorized: false, description: "Language mastery." }
+  { id: 'afrikaans', name: 'Afrikaans Quiz', icon: <Award className="w-8 h-8" />, authorized: true, description: "Language mastery." }
 ]
 
 function Header() {

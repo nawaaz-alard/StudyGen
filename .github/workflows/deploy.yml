@@ -73,7 +73,7 @@ jobs:
           action: "upload"
           app_location: "frontend" 
           api_location: "api" 
-          output_location: "dist" 
+          output_location: "build" 
           app_build_command: "npm install && npm run build"
           api_build_command: "npm install && npm run build"
 
