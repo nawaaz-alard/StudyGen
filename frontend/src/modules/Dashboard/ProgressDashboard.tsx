@@ -60,7 +60,7 @@ export default function ProgressDashboard() {
                             <span className="text-slate-400">Days</span>
                         </div>
                         <div className="mt-4 h-2 bg-slate-800 rounded-full overflow-hidden">
-                            <div className="h-full bg-yellow-500 w-full animate-pulse" style={{ width: `${Math.min(user.streak * 10, 100)}%` }} />
+                            <div className="h-full bg-yellow-500 w-full animate-pulse transition-all duration-1000" style={{ width: `${Math.min(user.streak * 10, 100)}%` }} />
                         </div>
                     </div>
 
