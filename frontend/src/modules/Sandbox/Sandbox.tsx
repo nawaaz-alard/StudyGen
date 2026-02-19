@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useUser } from '../../context/UserContext';
 import { QuizModal } from '../../components/shared/QuizModal';
-import { TestTube, ShieldCheck, Zap, LogOut, FileJson, BadgeCheck, Calculator, Atom, Award, User } from 'lucide-react';
+import { TestTube, ShieldCheck, FileJson, BadgeCheck, Calculator, Atom, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Sandbox() {
-    const { user, login, logout, addXp, completeQuiz } = useUser();
+    const { addXp, completeQuiz } = useUser();
     const [isQuizOpen, setIsQuizOpen] = useState(false);
 
     const testQuestions = [
@@ -34,53 +34,6 @@ export default function Sandbox() {
                             </h1>
                             <p className="text-slate-400 text-sm">System Verification Environment</p>
                         </div>
-                    </div>
-
-                    <div className="flex items-center gap-4 bg-slate-950/50 p-2 pr-4 rounded-2xl border border-white/5">
-                        {user.isAuthenticated ? (
-                            <div className="flex items-center gap-4 pl-2">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold border-2 border-indigo-400/30">
-                                        {user.picture ? <img src={user.picture} alt="Profile" className="w-full h-full rounded-full" /> : user.name.charAt(0)}
-                                    </div>
-                                    <div className="hidden sm:block">
-                                        <p className="text-white text-sm font-bold">{user.name}</p>
-                                        <p className="text-indigo-300 text-xs">Level {user.level} Explorer</p>
-                                    </div>
-                                </div>
-                                <div className="h-8 w-px bg-white/10 mx-2" />
-                                <button onClick={() => logout()} className="p-2 hover:bg-white/5 rounded-lg text-slate-400 hover:text-white transition-colors">
-                                    <LogOut size={18} />
-                                </button>
-                            </div>
-                        ) : (
-                            <button
-                                onClick={() => login()}
-                                className="flex items-center gap-3 px-4 py-2 bg-white text-slate-950 rounded-xl font-bold hover:bg-slate-100 transition-colors"
-                            >
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-                                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-                                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.24.81-.6z" fill="#FBBC05" />
-                                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-                                </svg>
-                                Sign in with Google
-                            </button>
-                        )}
-
-                        <div className="h-8 w-px bg-white/10" />
-
-                        <button
-                            onClick={() => {
-                                logout();
-                                localStorage.removeItem('studygen_user');
-                                window.location.reload();
-                            }}
-                            className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors tooltip"
-                            title="Factory Reset Session"
-                        >
-                            <User size={18} />
-                        </button>
                     </div>
                 </div>
 
@@ -130,23 +83,7 @@ export default function Sandbox() {
                         </section>
 
                         {/* Live State Inspector */}
-                        <section className="glass rounded-3xl overflow-hidden border border-white/5">
-                            <div className="bg-slate-950/30 p-4 border-b border-white/5 flex justify-between items-center">
-                                <h3 className="text-sm font-bold text-slate-300 flex items-center gap-2">
-                                    <Zap className="text-yellow-400" size={16} /> Live Application State
-                                </h3>
-                                <div className="flex gap-1.5">
-                                    <div className="w-2 h-2 rounded-full bg-red-500/50" />
-                                    <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
-                                    <div className="w-2 h-2 rounded-full bg-green-500/50" />
-                                </div>
-                            </div>
-                            <div className="p-0 bg-slate-950/80">
-                                <pre className="text-xs font-mono text-cyan-300 overflow-x-auto p-6 custom-scrollbar leading-relaxed">
-                                    {JSON.stringify(user, null, 2)}
-                                </pre>
-                            </div>
-                        </section>
+                        {/* Live State Inspector Removed */}
                     </div>
 
                     {/* Right Column: Controls */}
