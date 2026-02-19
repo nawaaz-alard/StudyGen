@@ -1,12 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  --primary-hue: 250;
-  /* Deep Purple/Blue */
-  --secondary-hue: 320;
-  /* Magenta/Pink */
+  /* Default Dark Mode Theme */
+  --bg-gradient-start: #1e1b4b;
+  --bg-gradient-end: #0f172a;
   --bg-color: #0f172a;
-  /* Slate 900 */
   --text-color: #f8fafc;
-  /* Slate 50 */
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
@@ -25,14 +26,29 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root.light-mode {
+  /* Light Mode Overrides */
+  --bg-gradient-start: #e0e7ff;
+  /* indigo-100 */
+  --bg-gradient-end: #f8fafc;
+  /* slate-50 */
+  --bg-color: #f8fafc;
+  --text-color: #0f172a;
+  /* slate-900 */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
 body {
   margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+  background: radial-gradient(circle at top right, var(--bg-gradient-start), var(--bg-gradient-end));
   overflow-x: hidden;
+  transition: background 0.5s ease;
 }
 
 #root {
@@ -273,7 +289,8 @@ button:active {
 /* Layout */
 .app-container {
   min-height: 100vh;
-  background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+  background: radial-gradient(circle at top right, var(--bg-gradient-start), var(--bg-gradient-end));
+  transition: background 0.5s ease;
 }
 
 .page-padding {

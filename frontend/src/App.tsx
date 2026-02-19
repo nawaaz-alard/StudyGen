@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom'
+import LifeScienceQuiz from './modules/LifeScience/LifeScienceQuiz'
+import MathQuiz from './modules/Math/MathQuiz'
+import AfrikaansQuiz from './modules/Afrikaans/AfrikaansQuiz'
+import Sandbox from './modules/Sandbox/Sandbox'
+import ProgressDashboard from './modules/Dashboard/ProgressDashboard'
 import { Monitor, BookOpen, Calculator, Atom, User, Lock, Award } from 'lucide-react'
 import { motion } from 'framer-motion'
 import './index.css'
+import { UserProvider, useUser } from './context/UserContext'
 
 // Interfaces
 interface Module {
@@ -20,7 +27,8 @@ const MOCK_MODULES: Module[] = [
   { id: 'afrikaans', name: 'Afrikaans Quiz', icon: <Award className="w-8 h-8" />, authorized: true, description: "Language mastery." }
 ]
 
-function Header() {
+function UserHeader() {
+  const { user, login, logout } = useUser();
   return (
     <header className="glass header">
       <div className="header-brand">
@@ -28,9 +36,24 @@ function Header() {
         <h2 className="header-title">StudyGen Hub</h2>
       </div>
       <div className="header-actions">
-        <a href="/.auth/login/github" className="glass-btn btn-login">
-          <User size={18} /> Login
-        </a>
+        {user.isAuthenticated ? (
+          <div className="flex items-center gap-4">
+            <Link to="/progress" className="hidden md:flex items-center gap-2 px-3 py-1.5 glass rounded-lg hover:bg-white/10 transition-colors no-underline">
+              <span className="text-xl">🔥</span>
+              <span className="text-sm font-bold text-orange-400">{user.streak} Day Streak</span>
+            </Link>
+
+            <Link to="/progress" className="text-sm font-bold text-slate-300 hover:text-white transition-colors no-underline">
+              Lvl {user.level} {user.name.split(' ')[0]}
+            </Link>
+
+            <button onClick={logout} className="glass-btn btn-login text-sm">Logout</button>
+          </div>
+        ) : (
+          <button onClick={() => login()} className="glass-btn btn-login">
+            <User size={18} /> Login
+          </button>
+        )}
       </div>
     </header>
   )
@@ -137,6 +160,18 @@ const MOCK_CONTENT: Record<string, any> = {
 
 function ModuleView() {
   const { id } = useParams()
+
+  if (id === 'lifescience') {
+    return <LifeScienceQuiz />
+  }
+  if (id === 'math') {
+    return <MathQuiz />
+  }
+  if (id === 'afrikaans') {
+    return <AfrikaansQuiz />
+  }
+
+
   const [content, setContent] = useState<any>(null)
 
   useEffect(() => {
@@ -197,16 +232,26 @@ function ModuleView() {
   )
 }
 
+
+
+// ... (existing code)
+
 export default function App() {
   return (
-    <Router>
-      <div className="app-container">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/modules/:id" element={<ModuleView />} />
-        </Routes>
-      </div>
-    </Router>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID_HERE"}>
+      <UserProvider>
+        <Router>
+          <div className="app-container">
+            <UserHeader />
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/sandbox" element={<Sandbox />} />
+              <Route path="/progress" element={<ProgressDashboard />} />
+              <Route path="/modules/:id" element={<ModuleView />} />
+            </Routes>
+          </div>
+        </Router>
+      </UserProvider>
+    </GoogleOAuthProvider>
   )
 }
