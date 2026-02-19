@@ -80,6 +80,37 @@ export default function Sandbox() {
                                     <p className="text-slate-400 text-xs">Taal & Woordeskat</p>
                                 </Link>
                             </div>
+
+                        </section>
+
+                        {/* Feature Testing */}
+                        <section>
+                            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                <TestTube className="text-pink-400" /> Feature Testing
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <Link to="/leaderboard" className="p-6 glass rounded-2xl hover:bg-white/5 transition-all text-left group">
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="p-3 bg-yellow-500/20 rounded-xl text-yellow-400">
+                                            <Award size={24} />
+                                        </div>
+                                        <span className="text-xs font-bold text-slate-500 bg-slate-800 px-2 py-1 rounded">NEW</span>
+                                    </div>
+                                    <h3 className="font-bold text-white mb-2 group-hover:text-yellow-400 transition-colors">Leaderboard</h3>
+                                    <p className="text-sm text-slate-400">View rankings and mock competition data.</p>
+                                </Link>
+
+                                <Link to="/flashcards" className="p-6 glass rounded-2xl hover:bg-white/5 transition-all text-left group">
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="p-3 bg-purple-500/20 rounded-xl text-purple-400">
+                                            <Atom size={24} />
+                                        </div>
+                                        <span className="text-xs font-bold text-slate-500 bg-slate-800 px-2 py-1 rounded">NEW</span>
+                                    </div>
+                                    <h3 className="font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">SRS Flashcards</h3>
+                                    <p className="text-sm text-slate-400">Test spaced repetition algorithm and card flip animations.</p>
+                                </Link>
+                            </div>
                         </section>
 
                         {/* Live State Inspector */}
@@ -120,7 +151,7 @@ export default function Sandbox() {
                                         <BadgeCheck size={20} />
                                         Launch System Quiz
                                     </button>
-                                    <p className="text-center text-[10px] text-slate-500 mt-3">Verifies: Modal, State Updates, XP Calculation</p>
+                                    <p className="text-center text-[10px] text-slate-500 mt-3">Verifies: AI Tutor, Modal, State Updates, XP Calculation</p>
                                 </div>
                             </div>
                         </div>
@@ -137,8 +168,8 @@ export default function Sandbox() {
                             </div>
                         </div>
                     </div>
-                </div>
-            </motion.div>
+                </div >
+            </motion.div >
 
             <QuizModal
                 isOpen={isQuizOpen}
@@ -150,6 +181,6 @@ export default function Sandbox() {
                     setIsQuizOpen(false);
                 }}
             />
-        </div>
+        </div >
     );
 }
