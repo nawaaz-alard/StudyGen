@@ -5,6 +5,7 @@ import Sandbox from './modules/Sandbox/Sandbox'
 import ProgressDashboard from './modules/Dashboard/ProgressDashboard'
 import Dashboard from './modules/Dashboard/Dashboard'
 import ModuleView from './modules/ModuleView/ModuleView'
+import Leaderboard from './modules/Leaderboard/Leaderboard'
 import Header from './components/layout/Header'
 import './index.css'
 import { UserProvider } from './context/UserContext'
@@ -22,6 +23,7 @@ export default function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/sandbox" element={<Sandbox />} />
                 <Route path="/progress" element={<ProgressDashboard />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
                 <Route path="/modules/:id" element={<ModuleView />} />
               </Routes>
             </div>

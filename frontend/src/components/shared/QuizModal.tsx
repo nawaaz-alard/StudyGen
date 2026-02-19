@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, X } from 'lucide-react';
+import { Trophy, X, Lightbulb, Bot } from 'lucide-react';
 
 export interface Question {
     q: string;
@@ -18,13 +18,52 @@ interface QuizModalProps {
     colorClass?: string; // e.g. 'bg-green-500'
 }
 
+// Mock AI Service
+const getSimulatedAIHelp = (question: string) => {
+    // In a real app, this would call Google Gemini API
+    if (question.toLowerCase().includes('solve') || question.toLowerCase().includes('calculate')) {
+        return "To solve this, break it down step-by-step. Identify the variables first, then apply the relevant formula. Double-check your arithmetic!";
+    }
+    if (question.toLowerCase().includes('what') || question.toLowerCase().includes('define')) {
+        return "This concept relates to the core definitions in this topic. Think about the key properties and how they distinguish this from similar terms.";
+    }
+    return "This is a tricky one! Try eliminating the obviously wrong answers first. Focus on the keywords in the question stem.";
+};
+
 export const QuizModal = ({ isOpen, onClose, title, questions, onComplete, colorClass = 'bg-indigo-500' }: QuizModalProps) => {
     const [currentQ, setCurrentQ] = useState(0);
     const [score, setScore] = useState(0);
     const [showResult, setShowResult] = useState(false);
     const [answers, setAnswers] = useState<Record<number, string>>({});
 
+    // AI Tutor State
+    const [showAI, setShowAI] = useState(false);
+    const [aiThinking, setAiThinking] = useState(false);
+    const [aiResponse, setAiResponse] = useState<string | null>(null);
+
     if (!isOpen || !questions || questions.length === 0) return null;
+
+    const handleAskAI = () => {
+        if (showAI) {
+            setShowAI(false);
+            return;
+        }
+        setShowAI(true);
+        setAiThinking(true);
+        setAiResponse(null);
+
+        // Simulate API delay
+        setTimeout(() => {
+            const help = getSimulatedAIHelp(questions[currentQ].q);
+            setAiResponse(help);
+            setAiThinking(false);
+        }, 1500);
+    };
+
+    const handleNext = () => {
+        setCurrentQ(Math.min(questions.length - 1, currentQ + 1));
+        setShowAI(false); // Reset AI for next question
+    };
 
     const handleFinish = () => {
         let finalScore = 0;
@@ -48,6 +87,7 @@ export const QuizModal = ({ isOpen, onClose, title, questions, onComplete, color
             setScore(0);
             setShowResult(false);
             setAnswers({});
+            setShowAI(false);
         }, 300);
     };
 
@@ -59,7 +99,7 @@ export const QuizModal = ({ isOpen, onClose, title, questions, onComplete, color
             >
                 <motion.div
                     initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
-                    className="bg-white rounded-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden shadow-2xl flex flex-col"
+                    className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden shadow-2xl flex flex-col"
                 >
                     {showResult ? (
                         <div className="p-12 text-center flex flex-col items-center">
@@ -74,11 +114,49 @@ export const QuizModal = ({ isOpen, onClose, title, questions, onComplete, color
                         <>
                             <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                                 <h3 className="font-bold text-slate-700">{title} <span className="text-slate-400 text-sm">Question {currentQ + 1} / {questions.length}</span></h3>
-                                <button onClick={onClose} aria-label="Close Quiz"><X size={20} className="text-slate-400 hover:text-red-500" /></button>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={handleAskAI}
+                                        className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${showAI ? 'bg-purple-100 text-purple-700 border border-purple-200' : 'bg-white border border-slate-200 text-slate-500 hover:text-purple-600 hover:border-purple-200'}`}
+                                    >
+                                        <Bot size={16} /> {showAI ? 'Close AI' : 'Ask AI'}
+                                    </button>
+                                    <button onClick={onClose} aria-label="Close Quiz"><X size={20} className="text-slate-400 hover:text-red-500" /></button>
+                                </div>
                             </div>
 
-                            <div className="p-8 flex-1 overflow-y-auto">
+                            <div className="p-8 flex-1 overflow-y-auto relative">
                                 <h2 className="text-xl font-medium text-slate-800 mb-6 leading-relaxed">{questions[currentQ].q}</h2>
+
+                                {/* AI Helper Section */}
+                                <AnimatePresence>
+                                    {showAI && (
+                                        <motion.div
+                                            initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+                                            animate={{ opacity: 1, height: 'auto', marginBottom: 24 }}
+                                            exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="bg-purple-50 rounded-xl p-4 border border-purple-100 flex gap-3">
+                                                <div className="bg-purple-100 p-2 rounded-lg h-fit">
+                                                    <Lightbulb size={20} className="text-purple-600" />
+                                                </div>
+                                                <div className="text-sm text-slate-700 leading-relaxed">
+                                                    {aiThinking ? (
+                                                        <div className="flex items-center gap-2 text-purple-500 font-medium">
+                                                            <span className="animate-spin">✦</span> Analyzing question...
+                                                        </div>
+                                                    ) : (
+                                                        <>
+                                                            <strong className="block text-purple-700 mb-1">AI Hint:</strong>
+                                                            {aiResponse}
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
 
                                 {questions[currentQ].options ? (
                                     <div className="grid gap-3">
@@ -120,7 +198,7 @@ export const QuizModal = ({ isOpen, onClose, title, questions, onComplete, color
                                     </button>
                                 ) : (
                                     <button
-                                        onClick={() => setCurrentQ(Math.min(questions.length - 1, currentQ + 1))}
+                                        onClick={handleNext}
                                         className="px-6 py-2 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 transition-colors"
                                     >
                                         Next

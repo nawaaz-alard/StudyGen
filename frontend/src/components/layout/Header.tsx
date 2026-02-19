@@ -1,6 +1,6 @@
 
 import { useUser } from '../../context/UserContext';
-import { Monitor, User } from 'lucide-react';
+import { Monitor, User, Crown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Header() {
@@ -17,6 +17,10 @@ export default function Header() {
                         <Link to="/progress" className="hidden md:flex items-center gap-2 px-3 py-1.5 glass rounded-lg hover:bg-white/10 transition-colors no-underline">
                             <span className="text-xl">🔥</span>
                             <span className="text-sm font-bold text-orange-400">{user.streak} Day Streak</span>
+                        </Link>
+
+                        <Link to="/leaderboard" className="hidden md:flex items-center gap-2 px-3 py-1.5 glass rounded-lg hover:bg-white/10 transition-colors no-underline text-yellow-500">
+                            <Crown size={16} />
                         </Link>
 
                         <Link to="/progress" className="text-sm font-bold text-slate-300 hover:text-white transition-colors no-underline">
