@@ -66,18 +66,22 @@ export default function PomodoroTimer() {
                 </button>
             </div>
 
-            <div className="flex justify-center gap-4">
+            <div className="flex gap-4">
                 <button
                     onClick={toggleTimer}
-                    className="w-12 h-12 rounded-full bg-white text-slate-900 flex items-center justify-center hover:scale-110 transition-transform active:scale-95 shadow-lg shadow-white/10"
+                    className={`p-4 rounded-xl transition-all shadow-lg ${isActive ? 'bg-orange-500 hover:bg-orange-600 text-white' : 'bg-slate-700 hover:bg-slate-600 text-white'}`}
+                    aria-label={isActive ? "Pause Timer" : "Start Timer"}
+                    title={isActive ? "Pause Timer" : "Start Timer"}
                 >
-                    {isActive ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" className="ml-1" />}
+                    {isActive ? <Pause size={24} /> : <Play size={24} fill="currentColor" />}
                 </button>
                 <button
                     onClick={resetTimer}
-                    className="w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
+                    className="p-4 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition-all shadow-lg"
+                    aria-label="Reset Timer"
+                    title="Reset Timer"
                 >
-                    <RotateCcw size={20} />
+                    <RotateCcw size={24} />
                 </button>
             </div>
         </div>

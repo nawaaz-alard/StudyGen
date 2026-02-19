@@ -135,7 +135,7 @@ export default function DailyChallenge() {
                                     <Zap className="text-orange-400 border-2 border-orange-400/20 rounded-lg p-1" size={32} />
                                     Daily Challenge
                                 </h2>
-                                <button onClick={reset} className="text-slate-400 hover:text-white transition-colors">
+                                <button onClick={reset} className="text-slate-400 hover:text-white transition-colors" aria-label="Close" title="Close">
                                     <X size={24} />
                                 </button>
                             </div>

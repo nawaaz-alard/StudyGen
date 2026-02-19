@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { BookOpen, Lock, Calculator, Atom, Award, Brain, BarChart3 } from 'lucide-react'
+import { BookOpen, Lock, Calculator, Atom, Award, Brain, BarChart3, RotateCcw, ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { MOCK_MODULES } from '../../data/mockData';
 import type { Module } from '../../data/mockData';
@@ -51,9 +51,28 @@ export default function Dashboard() {
                 <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
                     <Brain className="text-purple-400" /> Daily Focus
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <DailyChallenge />
                     <PomodoroTimer />
+
+                    {/* SRS Widget */}
+                    <div className="glass p-6 rounded-3xl border border-white/5 relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="flex justify-between items-start mb-4 relative z-10">
+                            <div className="p-3 bg-gradient-to-br from-indigo-400 to-purple-600 rounded-xl shadow-lg shadow-indigo-500/20">
+                                <RotateCcw className="text-white" size={24} />
+                            </div>
+                        </div>
+
+                        <h3 className="text-xl font-bold text-white mb-1 relative z-10">Flashcard Review</h3>
+                        <p className="text-slate-400 text-sm mb-4 relative z-10">
+                            Master concepts with spaced repetition.
+                        </p>
+
+                        <Link to="/flashcards" className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold transition-colors flex items-center justify-center gap-2 text-sm relative z-10 no-underline">
+                            Start Review <ArrowRight size={16} />
+                        </Link>
+                    </div>
                 </div>
             </section>
 
